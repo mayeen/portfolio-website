@@ -72,6 +72,8 @@
     animation: profile-animate 8s ease-in-out infinite 1s;
 }
 
+
+
 @keyframes profile-animate {
     0% {
         border-radius: 60% 40% 30% 70%/60% 30% 70% 40% ;

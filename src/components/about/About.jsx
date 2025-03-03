@@ -15,7 +15,7 @@ const About = () => {
                     <Info />
 
                     <p className="about_description">
-                        Ami khub e joss dev
+                        Full-stack engineer with 5+ years at multinational companies and 2 years as a working student in Germany. Currently pursuing an M.Sc. in Data Science. Passionate about solving algorithmic problems and writing clean, scalable code in team settings. Skilled in building platform-independent solutions that balance technical quality and business needs.
                     </p>
 
                     <a download="" href={CV} className="button button--flex">Download CV

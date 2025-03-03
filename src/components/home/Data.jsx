@@ -56,8 +56,12 @@ const Data = () => {
            </h1>
            <h3 className="home__subtitle">Full-stack Developer</h3>
            <p className="home__description">
-               I am a Full-stack Developer with a passion for creating beautiful and functional websites. I am a self-taught web developer who loves to learn new technologies and develop new projects.
-           </p>
+               <b>Full-stack engineer</b> with <b>5 years</b> at <b>multinational companies</b> and <b>2+ years</b> as
+               a <b>working student</b> in <b>Germany</b>. <b>M.Sc.</b> in <b>Web and Data Science</b>, with a focus on
+               exploring<b> data science</b> and <b>AI applications</b>. Passionate about solving algorithmic problems
+               and writing clean, scalable code in team settings. Skilled in building platform-independent solutions that balance
+               technical quality and business needs.
+               </p>
            <a href="#contact" className="button button--flex">Say Hello
                <svg
                    className="button__icon"
