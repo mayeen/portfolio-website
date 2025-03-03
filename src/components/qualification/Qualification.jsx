@@ -74,35 +74,19 @@ const Qualification = () => {
 
                         <div className="qualification__data">
                             <div>
-                                <h3 className="qualification__title">Product Integration Engineer</h3>
-                                <span className="qualification__subtitle">Baqend Gmbh</span>
-                                <div className="qualification__calendar">
-                                    <i className="uil uil-calendar-alt"></i> 2022-2025
-                                </div>
-                            </div>
-                            <div>
-                                <span className="qualification__rounder"></span>
-                                <span className="qualification__line"></span>
-                            </div>
-                        </div>
-
-                        <div className="qualification__data">
-                            <div></div>
-
-                            <div>
-                                <span className="qualification__rounder"></span>
-                                <span className="qualification__line"></span>
-                            </div>
-
-                            <div>
                                 <h3 className="qualification__title">Junior Software Developer</h3>
                                 <span className="qualification__subtitle">Totaltel Private Ltd</span>
                                 <div className="qualification__calendar">
                                     <i className="uil uil-calendar-alt"></i> 2017-2019
                                 </div>
                             </div>
-
+                            <div>
+                                <span className="qualification__rounder"></span>
+                                <span className="qualification__line"></span>
+                            </div>
                         </div>
+
+
                     </div>
 
 
@@ -134,10 +118,10 @@ const Qualification = () => {
                             </div>
 
                             <div>
-                                <h3 className="qualification__title">System Developer</h3>
-                                <span className="qualification__subtitle">Wunderman Thompson</span>
+                                <h3 className="qualification__title">B.Sc</h3>
+                                <span className="qualification__subtitle">Ahsanullah University of Science and Technology</span>
                                 <div className="qualification__calendar">
-                                    <i className="uil uil-calendar-alt"></i> 2019-2022
+                                    <i className="uil uil-calendar-alt"></i> 2013-2017
                                 </div>
                             </div>
 
@@ -145,10 +129,10 @@ const Qualification = () => {
 
                         <div className="qualification__data">
                             <div>
-                                <h3 className="qualification__title">Product Integration Engineer</h3>
-                                <span className="qualification__subtitle">Baqend Gmbh</span>
+                                <h3 className="qualification__title">Higher Secondary Certificate</h3>
+                                <span className="qualification__subtitle">Rajuk Uttara Model College</span>
                                 <div className="qualification__calendar">
-                                    <i className="uil uil-calendar-alt"></i> 2022-2025
+                                    <i className="uil uil-calendar-alt"></i> 2012
                                 </div>
                             </div>
                             <div>
@@ -166,10 +150,10 @@ const Qualification = () => {
                             </div>
 
                             <div>
-                                <h3 className="qualification__title">Junior Software Developer</h3>
-                                <span className="qualification__subtitle">Totaltel Private Ltd</span>
+                                <h3 className="qualification__title">Secondary School Certificate</h3>
+                                <span className="qualification__subtitle">Rajuk Uttara Model College</span>
                                 <div className="qualification__calendar">
-                                    <i className="uil uil-calendar-alt"></i> 2017-2019
+                                    <i className="uil uil-calendar-alt"></i> 2010
                                 </div>
                             </div>
 
