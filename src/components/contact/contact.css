@@ -25,6 +25,7 @@
     border-radius: 0.75rem;
     text-align: center;
     box-shadow: 0 2px 4px rgb(0 0 0 / 5%);
+    max-width: 200px;
 }
 
 .contact__card-icon {
@@ -45,6 +46,8 @@
 .contact__card-data {
     display: block;
     margin-bottom: var(--mb-0-75);
+    word-break: break-all;
+    overflow-wrap: break-word;
 }
 
 .contact__button {
