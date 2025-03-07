@@ -1,6 +1,6 @@
 import React from 'react'
 import './about.css';
-import AboutImg from "../../assets/profile.jpg"
+import AboutImg from "../../assets/profile2.jpg"
 import CV from "../../assets/cv.pdf"
 import Info from "./Info";
 
@@ -14,7 +14,7 @@ const About = () => {
                 <div className="about__data">
                     <Info />
 
-                    <p className="about_description">
+                    <p className="about__description">
                         Full-stack engineer with 5+ years at multinational companies and 2 years as a working student in Germany. Currently pursuing an M.Sc. in Data Science. Passionate about solving algorithmic problems and writing clean, scalable code in team settings. Skilled in building platform-independent solutions that balance technical quality and business needs.
                     </p>
 
