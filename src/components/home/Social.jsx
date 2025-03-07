@@ -8,7 +8,7 @@ const Social = () => {
                 <i className='bx bxl-linkedin-square contact__card-icon'></i>
             </a>
             <a href="https://github.com/mayeen" className="home__social-icon" target="_blank" rel="noreferrer">
-                <i className="uil uil-github-alt"></i>
+                <i className='bx bxl-github contact__card-icon'></i>
             </a>
         </div>
     )

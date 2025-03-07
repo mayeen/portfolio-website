@@ -205,9 +205,6 @@ img {
   }
 }
 
-@media screen and (width <= 576px) {
-}
-
 /* For small devices */
 @media screen and (width <= 350px) {
   :root {

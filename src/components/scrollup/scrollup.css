@@ -18,3 +18,32 @@
 .scrollup:hover{
     background-color: var(--title-color-dark);
 }
+
+
+/* =============== BREAKPOINTS =============== */
+
+/* For large devices */
+@media screen and (width <= 992px) {
+    .scrollup {
+        right: 1.5rem;
+        padding: 0.25rem 0.4rem;
+    }
+
+    .scrollup__icon {
+        font-size: 1.25rem;
+    }
+}
+
+/* For medium devices */
+@media screen and (width <= 768px) {
+    .show-scroll {
+        bottom: 4rem;
+    }
+}
+
+/* For small devices */
+@media screen and (width <= 350px) {
+    .scrollup {
+        right: 1rem;
+    }
+}
