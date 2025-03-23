@@ -45,22 +45,18 @@ const Qualification = () => {
                                 <h3 className="qualification__title">Product Integration Engineer</h3>
                                 <span className="qualification__subtitle">Baqend Gmbh</span>
                                 <div className="qualification__calendar-location">
-                                    <span><i className="uil uil-calendar-alt"></i> 09/2022 - 03/2025</span>
-                                    <span><i className="uil uil-location-point"></i> Hamburg</span>
+                                    <span><i className="uil uil-calendar-alt"></i> 09/2022 - present</span>
+                                    <span><i className="uil uil-location-point"></i> Germany</span>
                                 </div>
                                 <div className="qualification__company-desc">
                                     Accelerating clients existing website using our Html caching mechanism
                                 </div>
                                 <span className="qualification__tech-title">Responsibilities:</span>
                                 <ul className="qualification__bullet-list">
-                                    <li>Search and optimize clients code for better web vitals like LCP, CLS using
-                                        JavaScript, Regex and CSS rules.
-                                    </li>
-                                    <li>Integrate our product, SpeedKit according to client's code for dynamic change
-                                        detection, merging remote contents.
-                                    </li>
-                                    <li>Continuous development of integration project using TypeScript.</li>
-                                    <li>Blackbox testing to ensure error free and quality output after integration.</li>
+                                    <li>Search and optimize clients code for better web vitals like <b>LCP</b>, <b>CLS</b> using <b>JavaScript</b>, <b>Regex</b> and <b>CSS</b> rules.</li>
+                                    <li>Integrate our product, SpeedKit according to client's code for dynamic change detection, merging remote contents.</li>
+                                    <li>Continuous development of integration project using <b>TypeScript</b>.</li>
+                                    <li>Conducted <b>black-box testing</b> to validate system functionality.</li>
                                 </ul>
                                 <div className="qualification__tech">
                                     <span className="qualification__tech-title">Key Technologies:</span>
@@ -68,8 +64,9 @@ const Qualification = () => {
                                         <span className="qualification__tech-item">JavaScript</span>
                                         <span className="qualification__tech-item">TypeScript</span>
                                         <span className="qualification__tech-item">RegEx</span>
-                                        <span className="qualification__tech-item">CSS</span>
                                         <span className="qualification__tech-item">HTML</span>
+                                        <span className="qualification__tech-item">CSS</span>
+                                        <span className="qualification__tech-item">Blackbox Testing</span>
                                     </div>
                                 </div>
                             </div>
@@ -92,37 +89,32 @@ const Qualification = () => {
                                 <span className="qualification__subtitle">Wunderman Thompson</span>
                                 <div className="qualification__calendar-location">
                                     <span><i className="uil uil-calendar-alt"></i> 04/2019 - 03/2022</span>
-                                    <span><i className="uil uil-location-point"></i> Dhaka</span>
+                                    <span><i className="uil uil-location-point"></i> Bangladesh</span>
                                 </div>
                                 <div className="qualification__company-desc">
                                     Software solution provider for foreign clients
                                 </div>
                                 <span className="qualification__tech-title">Responsibilities:</span>
                                 <ul className="qualification__bullet-list">
-                                    <li>Converting complex business requirements into highly scalable backend using C#
-                                        (.NET) for our core product, BrandShare.
-                                    </li>
-                                    <li>Implementing robust front-end using Angular 2/5/9, AngularJS, Bootstrap 4 while
-                                        working side by side with off-shore client designers.
-                                    </li>
-                                    <li>Frequent integration of 3rd party API for better user experience using our
-                                        product.
-                                    </li>
-                                    <li>Developing RESTful API to expose business functionalities while maintaining
-                                        integrity of the system.
-                                    </li>
-                                    <li>Building in house tools for asynchronous and scheduled business need to lessen
-                                        manual working overhead upto 75%.
-                                    </li>
+                                    <li>Converting complex business requirements into highly scalable backend using <b>C# (.NET)</b> for our core product, BrandShare.</li>
+                                    <li>Implementing robust front-end using <b>Angular 2/5/9</b>, <b>AngularJS</b>, <b>Bootstrap</b> while working side by side with off-shore client designers.</li>
+                                    <li>Integrated <b>30+ third-party APIs</b> to enhance product functionality and user experience.</li>
+                                    <li>Designed <b>RESTful APIs</b> to expose core business logic, improving system interoperability by <b>40%</b>.</li>
+                                    <li>Developed internal tools for asynchronous/scheduled workflows, reducing manual effort by <b>75%</b> and accelerating task completion.</li>
+                                    <li>Adapted <b>micro-team model</b> within Scrum frameworks to meet critical deadlines without compromising quality (<b>100% on-time delivery</b>).</li>
                                 </ul>
                                 <div className="qualification__tech">
                                     <span className="qualification__tech-title">Key Technologies:</span>
                                     <div className="qualification__tech-items">
-                                        <span className="qualification__tech-item">C# (.NET)</span>
+                                        <span className="qualification__tech-item">C#</span>
+                                        <span className="qualification__tech-item">.Net Core</span>
                                         <span className="qualification__tech-item">Angular</span>
-                                        <span className="qualification__tech-item">AngularJS</span>
-                                        <span className="qualification__tech-item">Bootstrap</span>
                                         <span className="qualification__tech-item">RESTful API</span>
+                                        <span className="qualification__tech-item">SQLServer</span>
+                                        <span className="qualification__tech-item">AWS</span>
+                                        <span className="qualification__tech-item">Microservice</span>
+                                        <span className="qualification__tech-item">Git</span>
+                                        <span className="qualification__tech-item">Jira</span>
                                     </div>
                                 </div>
                             </div>
@@ -134,30 +126,26 @@ const Qualification = () => {
                                 <span className="qualification__subtitle">Totaltel Private Ltd</span>
                                 <div className="qualification__calendar-location">
                                     <span><i className="uil uil-calendar-alt"></i> 06/2017 - 04/2019</span>
-                                    <span><i className="uil uil-location-point"></i> Dhaka</span>
+                                    <span><i className="uil uil-location-point"></i> Bangladesh</span>
                                 </div>
                                 <div className="qualification__company-desc">
                                     Provides telecommunication-based solutions to government run organization
                                 </div>
                                 <span className="qualification__tech-title">Responsibilities:</span>
                                 <ul className="qualification__bullet-list">
-                                    <li>Creating a scalable clinic management system from scratch using .NET MVC for
-                                        local market.
-                                    </li>
-                                    <li>Continuous engagement with clients for requirement analysis and blackbox testing
-                                        to ensure quality output.
-                                    </li>
-                                    <li>Implemented authenticator device SDK to create custom authentication app in
-                                        ASP.Net using WEB API for govt. project.
-                                    </li>
+                                    <li>Engineered a scalable clinic management system from scratch using <b>.NET MVC</b>, supporting <b>15+ clinics</b> in the local market and reducing administrative workload by <b>30%</b> through automation.</li>
+                                    <li>Continuous engagement with clients for requirement analysis and blackbox testing to ensure quality output.</li>
+                                    <li>Implemented authenticator device SDK to create custom authentication app in <b>ASP.Net</b> using <b>WEB API</b> for government project.</li>
                                 </ul>
                                 <div className="qualification__tech">
                                     <span className="qualification__tech-title">Key Technologies:</span>
                                     <div className="qualification__tech-items">
-                                        <span className="qualification__tech-item">.NET MVC</span>
+                                        <span className="qualification__tech-item">C#</span>
                                         <span className="qualification__tech-item">ASP.NET</span>
-                                        <span className="qualification__tech-item">WEB API</span>
+                                        <span className="qualification__tech-item">Bootstrap</span>
+                                        <span className="qualification__tech-item">RESTful API</span>
                                         <span className="qualification__tech-item">SQL Server</span>
+                                        <span className="qualification__tech-item">Blackbox Testing</span>
                                     </div>
                                 </div>
                             </div>
@@ -178,9 +166,15 @@ const Qualification = () => {
                                 <h3 className="qualification__title">M.Sc. in Web and Data Science</h3>
                                 <span className="qualification__subtitle">Universität Koblenz</span>
                                 <div className="qualification__calendar-location">
-                                    <span><i className="uil uil-calendar-alt"></i> 2022-2024</span>
+                                    <span><i className="uil uil-calendar-alt"></i> 04/2022 - 09/2025</span>
                                     <span><i className="uil uil-location-point"></i> Germany</span>
                                 </div>
+                                <div className="qualification__company-desc">
+                                    Core Curriculum:
+                                </div>
+                                <ul className="qualification__bullet-list">
+                                    <li>Web Science, Engineering Web & Data Intensive System, Data Science, Big Data Analysis</li>
+                                </ul>
                             </div>
                             <div>
                                 <span className="qualification__rounder"></span>
@@ -200,9 +194,15 @@ const Qualification = () => {
                                 <h3 className="qualification__title">B.Sc. in Computer Science and Engineering</h3>
                                 <span className="qualification__subtitle">Ahsanullah University of Science & Technology</span>
                                 <div className="qualification__calendar-location">
-                                    <span><i className="uil uil-calendar-alt"></i> 2013-2017</span>
+                                    <span><i className="uil uil-calendar-alt"></i> 07/2013 - 06/2017</span>
                                     <span><i className="uil uil-location-point"></i> Bangladesh</span>
                                 </div>
+                                <div className="qualification__company-desc">
+                                    Core Curriculum:
+                                </div>
+                                <ul className="qualification__bullet-list">
+                                    <li>Algorithm, Data Structure, Object Oriented Programming, Software Engineering</li>
+                                </ul>
                             </div>
                         </div>
 
