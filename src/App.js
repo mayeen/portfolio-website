@@ -8,6 +8,7 @@ import Qualification from "./components/qualification/Qualification";
 import Contact from "./components/contact/Contact";
 import Footer from "./components/footer/Footer"
 import ScrollUp from "./components/scrollup/scrollUp";
+import Projects from "./components/projects/Projects";
 
 function App() {
   return (
@@ -18,6 +19,7 @@ function App() {
            <About />
            <Qualification />
            <Skills />
+           <Projects />
            <Contact />
        </main>
        <Footer />
