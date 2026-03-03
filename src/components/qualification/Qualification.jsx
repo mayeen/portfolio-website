@@ -42,31 +42,27 @@ const Qualification = () => {
                     }>
                         <div className="qualification__data">
                             <div>
-                                <h3 className="qualification__title">Product Integration Engineer</h3>
-                                <span className="qualification__subtitle">Baqend Gmbh</span>
+                                <h3 className="qualification__title">Research Assistant - Student Work</h3>
+                                <span className="qualification__subtitle">Fraunhofer IKTS</span>
                                 <div className="qualification__calendar-location">
-                                    <span><i className="uil uil-calendar-alt"></i> 09/2022 - present</span>
-                                    <span><i className="uil uil-location-point"></i> Germany</span>
+                                    <span><i className="uil uil-calendar-alt"></i> 05/2025 - present</span>
+                                    <span><i className="uil uil-location-point"></i> Dresden, Germany</span>
                                 </div>
                                 <div className="qualification__company-desc">
-                                    Accelerating clients existing website using our Html caching mechanism
+                                    European industry project on wastewater and industrial processes
                                 </div>
                                 <span className="qualification__tech-title">Responsibilities:</span>
                                 <ul className="qualification__bullet-list">
-                                    <li>Search and optimize clients code for better web vitals like <b>LCP</b>, <b>CLS</b> using <b>JavaScript</b>, <b>Regex</b> and <b>CSS</b> rules.</li>
-                                    <li>Integrate our product, SpeedKit according to client's code for dynamic change detection, merging remote contents.</li>
-                                    <li>Continuous development of integration project using <b>TypeScript</b>.</li>
-                                    <li>Conducted <b>black-box testing</b> to validate system functionality.</li>
+                                    <li>Conducted analysis of large-scale <b>time-series sensor data</b> from wastewater and industrial processes within a European industry project.</li>
+                                    <li>Designed and trained <b>machine learning models</b> for thermal energy recovery and effluent temperature forecasting, achieving <b>RMSE of 1.3</b> and <b>accuracy of 91%</b>.</li>
+                                    <li>Developed and validated <b>simulation pipelines</b> to assess seasonal cooling strategies and optimize energy efficiency.</li>
                                 </ul>
                                 <div className="qualification__tech">
                                     <span className="qualification__tech-title">Key Technologies:</span>
                                     <div className="qualification__tech-items">
-                                        <span className="qualification__tech-item">JavaScript</span>
-                                        <span className="qualification__tech-item">TypeScript</span>
-                                        <span className="qualification__tech-item">RegEx</span>
-                                        <span className="qualification__tech-item">HTML</span>
-                                        <span className="qualification__tech-item">CSS</span>
-                                        <span className="qualification__tech-item">Blackbox Testing</span>
+                                        <span className="qualification__tech-item">Python</span>
+                                        <span className="qualification__tech-item">TensorFlow</span>
+                                        <span className="qualification__tech-item">Docker</span>
                                     </div>
                                 </div>
                             </div>
@@ -85,8 +81,39 @@ const Qualification = () => {
                             </div>
 
                             <div>
+                                <h3 className="qualification__title">Product Integration Engineer - Student Work</h3>
+                                <span className="qualification__subtitle">Baqend Gmbh</span>
+                                <div className="qualification__calendar-location">
+                                    <span><i className="uil uil-calendar-alt"></i> 09/2022 - 04/2025</span>
+                                    <span><i className="uil uil-location-point"></i> Germany</span>
+                                </div>
+                                <div className="qualification__company-desc">
+                                    Accelerating clients' websites using HTML caching mechanisms
+                                </div>
+                                <span className="qualification__tech-title">Responsibilities:</span>
+                                <ul className="qualification__bullet-list">
+                                    <li>Optimized client code to improve Web Vitals (<b>LCP</b>, <b>FCP</b>, <b>CLS</b>) using <b>JavaScript</b>, <b>Regex</b>, and <b>CSS</b>, achieving up to <b>400% faster</b> response time.</li>
+                                    <li>Integrated our product (<b>SpeedKit</b>) into client applications, leveraging caching mechanisms and predictive preloading of HTML to enhance performance.</li>
+                                    <li>Developed and maintained the integration projects using <b>TypeScript</b>, ensuring efficient and scalable solutions.</li>
+                                    <li>Conducted <b>black-box testing</b> to validate system functionalities and ensure high performance and stability.</li>
+                                </ul>
+                                <div className="qualification__tech">
+                                    <span className="qualification__tech-title">Key Technologies:</span>
+                                    <div className="qualification__tech-items">
+                                        <span className="qualification__tech-item">JavaScript</span>
+                                        <span className="qualification__tech-item">TypeScript</span>
+                                        <span className="qualification__tech-item">RegEx</span>
+                                        <span className="qualification__tech-item">HTML</span>
+                                        <span className="qualification__tech-item">CSS</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div className="qualification__data">
+                            <div>
                                 <h3 className="qualification__title">System Developer</h3>
-                                <span className="qualification__subtitle">Wunderman Thompson</span>
+                                <span className="qualification__subtitle">Hogarth Dhaka</span>
                                 <div className="qualification__calendar-location">
                                     <span><i className="uil uil-calendar-alt"></i> 04/2019 - 03/2022</span>
                                     <span><i className="uil uil-location-point"></i> Bangladesh</span>
@@ -96,12 +123,11 @@ const Qualification = () => {
                                 </div>
                                 <span className="qualification__tech-title">Responsibilities:</span>
                                 <ul className="qualification__bullet-list">
-                                    <li>Converting complex business requirements into highly scalable backend using <b>C# (.NET)</b> for our core product, BrandShare.</li>
-                                    <li>Implementing robust front-end using <b>Angular 2/5/9</b>, <b>AngularJS</b>, <b>Bootstrap</b> while working side by side with off-shore client designers.</li>
+                                    <li>Built scalable <b>C# (.NET)</b> backends and <b>RESTful APIs</b>, enhancing system interoperability by <b>40%</b>.</li>
+                                    <li>Implementing robust front-end using <b>Angular</b>, <b>Bootstrap</b> while working side by side with off-shore client designers.</li>
                                     <li>Integrated <b>30+ third-party APIs</b> to enhance product functionality and user experience.</li>
-                                    <li>Designed <b>RESTful APIs</b> to expose core business logic, improving system interoperability by <b>40%</b>.</li>
                                     <li>Developed internal tools for asynchronous/scheduled workflows, reducing manual effort by <b>75%</b> and accelerating task completion.</li>
-                                    <li>Adapted <b>micro-team model</b> within Scrum frameworks to meet critical deadlines without compromising quality (<b>100% on-time delivery</b>).</li>
+                                    <li>Followed <b>Agile</b> methodology and <b>Scrum</b> for efficient development and delivery.</li>
                                 </ul>
                                 <div className="qualification__tech">
                                     <span className="qualification__tech-title">Key Technologies:</span>
@@ -118,12 +144,23 @@ const Qualification = () => {
                                     </div>
                                 </div>
                             </div>
+                            <div>
+                                <span className="qualification__rounder"></span>
+                                <span className="qualification__line"></span>
+                            </div>
                         </div>
 
                         <div className="qualification__data">
+                            <div></div>
+
+                            <div>
+                                <span className="qualification__rounder"></span>
+                                <span className="qualification__line"></span>
+                            </div>
+
                             <div>
                                 <h3 className="qualification__title">Junior Software Developer</h3>
-                                <span className="qualification__subtitle">Totaltel Private Ltd</span>
+                                <span className="qualification__subtitle">Totaltel Private Ltd.</span>
                                 <div className="qualification__calendar-location">
                                     <span><i className="uil uil-calendar-alt"></i> 06/2017 - 04/2019</span>
                                     <span><i className="uil uil-location-point"></i> Bangladesh</span>
@@ -133,9 +170,9 @@ const Qualification = () => {
                                 </div>
                                 <span className="qualification__tech-title">Responsibilities:</span>
                                 <ul className="qualification__bullet-list">
-                                    <li>Engineered a scalable clinic management system from scratch using <b>.NET MVC</b>, supporting <b>15+ clinics</b> in the local market and reducing administrative workload by <b>30%</b> through automation.</li>
-                                    <li>Continuous engagement with clients for requirement analysis and blackbox testing to ensure quality output.</li>
-                                    <li>Implemented authenticator device SDK to create custom authentication app in <b>ASP.Net</b> using <b>WEB API</b> for government project.</li>
+                                    <li>Built a scalable <b>.NET MVC</b> clinic management system, supporting <b>15+ clinics</b> and reducing admin workload by <b>30%</b>.</li>
+                                    <li>Collaborated with clients for requirement analysis and <b>black-box testing</b> to ensure quality.</li>
+                                    <li>Integrated authenticator device SDK to develop a custom authentication app for a government project using <b>ASP.NET Web API</b>.</li>
                                 </ul>
                                 <div className="qualification__tech">
                                     <span className="qualification__tech-title">Key Technologies:</span>
@@ -148,10 +185,6 @@ const Qualification = () => {
                                         <span className="qualification__tech-item">Blackbox Testing</span>
                                     </div>
                                 </div>
-                            </div>
-                            <div>
-                                <span className="qualification__rounder"></span>
-                                <span className="qualification__line"></span>
                             </div>
                         </div>
                     </div>

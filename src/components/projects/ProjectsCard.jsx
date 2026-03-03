@@ -24,19 +24,9 @@ const ProjectsCard = ({ project }) => {
             </div>
 
             <div className="projects__links">
-                {/* Use explicit URL instead of variable reference if there's an issue */}
-                {project.title === "Portfolio Website" ? (
+                {project.github && (
                     <a
-                        href="https://github.com/mayeen/portfolio-website"
-                        className="projects__link"
-                        target="_blank"
-                        rel="noreferrer"
-                    >
-                        <i className="uil uil-github"></i> GitHub
-                    </a>
-                ) : (
-                    <a
-                        href="https://github.com/mayeen/NeurotechDemo"
+                        href={project.github}
                         className="projects__link"
                         target="_blank"
                         rel="noreferrer"

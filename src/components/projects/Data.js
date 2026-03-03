@@ -20,5 +20,12 @@ export const projectsData = [
         technologies: ["C#", "ASP.NET", "Fingerprint Sensor SDKs", "Image-Based Authentication", "RESTful APIs"],
         github: "https://github.com/mayeen/NeurotechDemo"
     },
-    // Add more projects as needed
+    {
+        id: 3,
+        image: portfolioImg,
+        title: "E-Commerce Chatbot using Agentic AI",
+        description: "Built an intelligent e-commerce chatbot powered by Agentic AI that assists users with product discovery, order tracking, and personalized recommendations. Leveraged large language models with autonomous agent workflows to handle multi-turn conversations, query product catalogs, and execute actions like adding items to cart or processing returns — all through natural language interaction.",
+        technologies: ["Python", "LangChain", "OpenAI API", "FastAPI", "React.js", "Docker"],
+        github: "https://github.com/mayeen/E-commerce-chatbot-with-Agentic-AI",
+    },
 ];
