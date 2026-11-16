@@ -1,0 +1,36 @@
+# Netlify build and hosting settings (overrides the Netlify UI).
+# Site: https://kazishahriar.dev   Fallback: https://kazishahriar.netlify.app
+
+[build]
+  # Tests must pass before the site is built; `npm run build` also runs
+  # `content:check` (prebuild), so a stale or invalid content/cv.md blocks the deploy.
+  command = "npm run test:all && npm run build"
+  publish = "build"
+
+[build.environment]
+  NODE_VERSION = "22"
+  # Puppeteer is only used for local screenshots; skip its ~150 MB Chrome download on Netlify.
+  PUPPETEER_SKIP_DOWNLOAD = "true"
+
+# Security headers for every page.
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Content-Type-Options = "nosniff"
+    X-Frame-Options = "DENY"
+    Referrer-Policy = "strict-origin-when-cross-origin"
+    Permissions-Policy = "camera=(), microphone=(), geolocation=()"
+
+# CRA puts content-hashed files in /static, so they can be cached forever.
+[[headers]]
+  for = "/static/*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+# Old address (printed on earlier CVs) -> custom domain, keeping the path.
+# Deploy previews (deploy-preview-N--kazishahriar.netlify.app) are not affected.
+[[redirects]]
+  from = "https://kazishahriar.netlify.app/*"
+  to = "https://kazishahriar.dev/:splat"
+  status = 301
+  force = true

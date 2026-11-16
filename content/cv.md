@@ -13,7 +13,7 @@
 - email: km.shahriar28@gmail.com
 - phone: +49 1521 233 6476
 - whatsapp: 4915212336476
-- website: https://kazishahriar.netlify.app/
+- website: https://kazishahriar.dev/
 
 ## Headline
 #### ai
@@ -198,7 +198,7 @@ AI/ML engineer based in Chemnitz, Germany, with 7+ years of production software 
 - image: /images/projects/portfolio.jpg
 - technologies: React.js, HTML5, CSS3, JavaScript, Netlify
 - github: https://github.com/mayeen/portfolio-website
-- demo: https://kazishahriar.netlify.app/
+- demo: https://kazishahriar.dev/
 
 #### software
 - Designed and developed a fully responsive single-page portfolio website in React.js to showcase skills, projects and achievements.
