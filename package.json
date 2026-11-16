@@ -21,7 +21,7 @@
     "prebuild": "npm run content:check",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "test:content": "node --test scripts/build-content.test.mjs",
+    "test:content": "node --test \"scripts/*.test.mjs\"",
     "test:app": "react-scripts test --watchAll=false --runInBand",
     "test:all": "npm run test:content && npm run test:app",
     "eject": "react-scripts eject"
