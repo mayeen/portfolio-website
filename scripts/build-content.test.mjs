@@ -203,6 +203,11 @@ describe('the real content/cv.md', () => {
         for (const e of data.experience) assert.ok(e.bullets.length > 0, `${e.id} has no bullets`);
     });
 
+    test('links point to kazishahriar.dev, never the old netlify.app address', () => {
+        assert.equal(data.profile.website, 'https://kazishahriar.dev/');
+        assert.doesNotMatch(JSON.stringify(data), /netlify\.app/);
+    });
+
     test('certification is AI-901', () => {
         assert.equal(data.certifications[0].code, 'AI-901');
     });
