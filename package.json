@@ -17,6 +17,7 @@
     "start": "react-scripts start",
     "content": "node scripts/build-content.mjs",
     "content:check": "node scripts/build-content.mjs --check",
+    "sync": "node --env-file-if-exists=.env scripts/sync-cosmos.mjs",
     "prebuild": "npm run content:check",
     "build": "react-scripts build",
     "test": "react-scripts test",
@@ -44,6 +45,7 @@
     ]
   },
   "devDependencies": {
+    "@azure/cosmos": "^4.10.2",
     "@eslint/js": "^9.20.0",
     "@testing-library/dom": "^10.4.0",
     "@testing-library/jest-dom": "^6.6.3",

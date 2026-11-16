@@ -1,0 +1,43 @@
+# Pushes content/cv.md into Azure Cosmos DB whenever it (or the sync code) changes on main.
+# Needs repository secrets COSMOS_ENDPOINT and COSMOS_KEY (read-write key).
+name: Sync content to Cosmos DB
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - content/cv.md
+      - scripts/build-content.mjs
+      - scripts/sync-cosmos.mjs
+      - .github/workflows/sync-content.yml
+  workflow_dispatch: # allows a manual run from the Actions tab
+
+permissions:
+  contents: read
+
+concurrency:
+  group: sync-content
+  cancel-in-progress: false
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    env:
+      PUPPETEER_SKIP_DOWNLOAD: "true"
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - run: npm ci
+
+      # Validates cv.md and the sync logic before touching the database.
+      - run: npm run test:content
+
+      - run: npm run sync
+        env:
+          COSMOS_ENDPOINT: ${{ secrets.COSMOS_ENDPOINT }}
+          COSMOS_KEY: ${{ secrets.COSMOS_KEY }}
