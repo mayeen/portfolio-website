@@ -87,3 +87,13 @@ Notes:
 The parser stops with `cv.md:<line>: <problem>` for: unknown sections, fields or variants; missing required fields; bad dates or start after end; duplicate or non-kebab-case ids; missing website wording; unknown skill levels; missing files in `public/`; malformed lines.
 
 Test a draft without touching the site: `CV_FILE=path/to/draft.md node scripts/build-content.mjs --check`
+
+## Tests
+
+| Command | What it runs |
+|---|---|
+| `npm run test:content` | Parser tests in `scripts/build-content.test.mjs`: every validation rule, variant fallback, dates, and that the real `cv.md` is valid and `src/data/` is up to date |
+| `npm run test:app` | React tests in `src/**/*.test.js`: the whole page renders from the data, plus unit tests for helpers and components |
+| `npm run test:all` | Both |
+
+When you add a field or rule to the parser, add a case to the `validation errors` table in `scripts/build-content.test.mjs`.

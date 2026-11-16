@@ -13,6 +13,8 @@ export default [
   ...tseslint.configs.recommended,
   pluginReact.configs.flat.recommended,
   {settings: {react: {version: "detect"}}},
-  // Node scripts (content parser).
+  // Jest test files (Create React App runs them with jest globals).
+  {files: ["src/**/*.test.js", "src/setupTests.js"], languageOptions: { globals: globals.jest }},
+  // Node scripts (content parser and its tests).
   {files: ["scripts/**/*.mjs"], languageOptions: { globals: globals.node }},
 ];
