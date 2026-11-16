@@ -1,34 +1,50 @@
 [
   {
     "id": "fraunhofer-ikts",
-    "role": "Research Assistant - Student Work",
+    "role": "Research Assistant (Werkstudent)",
     "company": "Fraunhofer IKTS",
     "location": "Dresden, Germany",
     "startDate": "2025-05",
-    "endDate": null,
-    "summary": "European industry project on wastewater and industrial processes",
+    "endDate": "2026-09",
+    "summary": "Applied AI/ML research on industrial sensor and process data, including an EU project",
     "bullets": [
-      "Conducted analysis of large-scale **time-series sensor data** from wastewater and industrial processes within a European industry project.",
-      "Designed and trained **machine learning models** for thermal energy recovery and effluent temperature forecasting, achieving **RMSE of 1.3** and **accuracy of 91%**.",
-      "Developed and validated **simulation pipelines** to assess seasonal cooling strategies and optimize energy efficiency."
+      "Built a **React** dashboard and **Python** pipeline that turns raw battery sensor data into domain-specific charts and reports, with an **LLM** layer over **Chroma** (**LangChain**) for analysis.",
+      "Trained ANN time-series forecasting model for effluent temperature on an EU project, reaching **RMSE of 1.3°C** using **Python, TensorFlow, Keras and CUDA**.",
+      "Built an XGBoost model predicting experiment outcomes from process parameters, cutting **scrap material by 9%** using **Python and RESTful APIs**."
     ],
-    "technologies": ["Python", "TensorFlow", "Docker"]
+    "technologies": [
+      "Python",
+      "TensorFlow",
+      "Keras",
+      "CUDA",
+      "XGBoost",
+      "LangChain",
+      "Chroma",
+      "React",
+      "RESTful APIs",
+      "Docker"
+    ]
   },
   {
     "id": "baqend",
-    "role": "Product Integration Engineer - Student Work",
-    "company": "Baqend Gmbh",
+    "role": "Product Integration Engineer (Werkstudent)",
+    "company": "Baqend GmbH",
     "location": "Germany",
     "startDate": "2022-09",
     "endDate": "2025-04",
     "summary": "Accelerating clients' websites using HTML caching mechanisms",
     "bullets": [
-      "Optimized client code to improve Web Vitals (**LCP**, **FCP**, **CLS**) using **JavaScript**, **Regex**, and **CSS**, achieving up to **400% faster** response time.",
-      "Integrated our product (**SpeedKit**) into client applications, leveraging caching mechanisms and predictive preloading of HTML to enhance performance.",
-      "Developed and maintained the integration projects using **TypeScript**, ensuring efficient and scalable solutions.",
-      "Conducted **black-box testing** to validate system functionalities and ensure high performance and stability."
+      "Developed data-driven performance optimization strategies in **TypeScript**, using Web Vitals analysis to achieve up to **400% faster** page loads.",
+      "Implemented predictive preloading algorithms and intelligent caching mechanisms, applying pattern recognition to user navigation behavior."
     ],
-    "technologies": ["JavaScript", "TypeScript", "RegEx", "HTML", "CSS"]
+    "technologies": [
+      "TypeScript",
+      "JavaScript",
+      "Web Vitals",
+      "RegEx",
+      "HTML",
+      "CSS"
+    ]
   },
   {
     "id": "hogarth",
@@ -39,27 +55,42 @@
     "endDate": "2022-03",
     "summary": "Software solution provider for foreign clients",
     "bullets": [
-      "Built scalable **C# (.NET)** backends and **RESTful APIs**, enhancing system interoperability by **40%**.",
-      "Implementing robust front-end using **Angular**, **Bootstrap** while working side by side with off-shore client designers.",
-      "Integrated **30+ third-party APIs** to enhance product functionality and user experience.",
-      "Developed internal tools for asynchronous/scheduled workflows, reducing manual effort by **75%** and accelerating task completion.",
-      "Followed **Agile** methodology and **Scrum** for efficient development and delivery."
+      "Built **.NET** backend services and an **Angular** dashboard for a workflow management tool serving enterprise clients including Dell, Ford, and Colgate using **SQL Server, Docker** and **AWS**.",
+      "Integrated in-house and third-party APIs and developed asynchronous workflow automation tools using **.NET Core, SQL Server** and **Docker**.",
+      "Practiced Agile/Scrum with microservices architecture and CI/CD pipelines on AWS."
     ],
-    "technologies": ["C#", ".Net Core", "Angular", "RESTful API", "SQLServer", "AWS", "Microservice", "Git", "Jira"]
+    "technologies": [
+      "C#",
+      ".NET Core",
+      "Angular",
+      "SQL Server",
+      "Docker",
+      "AWS",
+      "Microservices",
+      "CI/CD",
+      "Git",
+      "Jira"
+    ]
   },
   {
     "id": "totaltel",
     "role": "Junior Software Developer",
-    "company": "Totaltel Private Ltd.",
+    "company": "Totaltel Private Ltd",
     "location": "Bangladesh",
     "startDate": "2017-06",
-    "endDate": "2019-04",
+    "endDate": "2019-03",
     "summary": "Provides telecommunication-based solutions to government run organization",
     "bullets": [
-      "Built a scalable **.NET MVC** clinic management system, supporting **15+ clinics** and reducing admin workload by **30%**.",
-      "Collaborated with clients for requirement analysis and **black-box testing** to ensure quality.",
-      "Integrated authenticator device SDK to develop a custom authentication app for a government project using **ASP.NET Web API**."
+      "Built a clinic management system supporting **15+ clinics** using **.NET MVC**, **SQL Server** and **Bootstrap**, reducing admin workload by **30%**."
     ],
-    "technologies": ["C#", "ASP.NET", "Bootstrap", "RESTful API", "SQL Server", "Blackbox Testing"]
+    "technologies": [
+      "C#",
+      "ASP.NET",
+      ".NET MVC",
+      "Bootstrap",
+      "RESTful API",
+      "SQL Server",
+      "Black-box Testing"
+    ]
   }
 ]

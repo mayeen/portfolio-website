@@ -39,6 +39,21 @@
     font-size: var(--tiny-font-size);
 }
 
+.about__cv-alt {
+    display: inline-flex;
+    align-items: center;
+    column-gap: 0.25rem;
+    margin-left: 1.5rem;
+    font-size: var(--small-font-size);
+    font-weight: var(--font-medium);
+    color: var(--title-color);
+    transition: 0.3s;
+}
+
+.about__cv-alt:hover {
+    color: var(--title-color-dark);
+}
+
 .about__description{
     padding: 0 4rem 0 0;
     margin-bottom: var(--mb-2-5);

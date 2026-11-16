@@ -1,7 +1,6 @@
 import React from 'react'
 import './about.css';
 import AboutImg from "../../assets/profile2.jpg"
-import CV from "../../assets/cv.pdf"
 import Info from "./Info";
 import { profile } from '../../data';
 
@@ -17,7 +16,7 @@ const About = () => {
 
                     <p className="about__description">{profile.about}</p>
 
-                    <a download="" href={CV} className="button button--flex">Download CV
+                    <a download href={profile.cv.en} className="button button--flex">Download CV
                         <svg
                             className="button__icon"
                             xmlns="http://www.w3.org/2000/svg"
@@ -43,6 +42,11 @@ const About = () => {
                                 fill="var(--container-color)"
                             ></path>
                         </svg></a>
+                    {profile.cv.de && (
+                        <a download href={profile.cv.de} className="about__cv-alt">
+                            Lebenslauf (Deutsch) <i className="bx bx-download"></i>
+                        </a>
+                    )}
                 </div>
             </div>
         </section>

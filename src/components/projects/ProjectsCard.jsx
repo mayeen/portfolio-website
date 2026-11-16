@@ -4,9 +4,11 @@ import PropTypes from 'prop-types';
 const ProjectsCard = ({ project }) => {
     return (
         <div className="projects__card">
-            <div className="projects__img-container">
-                <img src={project.image} alt={project.title} className="projects__img" />
-            </div>
+            {project.image && (
+                <div className="projects__img-container">
+                    <img src={project.image} alt={project.title} className="projects__img" />
+                </div>
+            )}
 
             <h3 className="projects__title">{project.title}</h3>
             <p className="projects__description">{project.description}</p>
@@ -51,11 +53,11 @@ const ProjectsCard = ({ project }) => {
 ProjectsCard.propTypes = {
     project: PropTypes.shape({
         id: PropTypes.string.isRequired,
-        image: PropTypes.string.isRequired,
+        image: PropTypes.string,
         title: PropTypes.string.isRequired,
         description: PropTypes.string.isRequired,
         technologies: PropTypes.arrayOf(PropTypes.string).isRequired,
-        github: PropTypes.string.isRequired,
+        github: PropTypes.string,
         demo: PropTypes.string
     }).isRequired
 };

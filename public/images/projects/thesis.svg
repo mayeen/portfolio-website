@@ -1,0 +1,52 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 280" role="img" aria-labelledby="t">
+  <title id="t">Real medical table data transformed into privacy-preserving synthetic data</title>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#2f3b4f"/>
+      <stop offset="1" stop-color="#1f2735"/>
+    </linearGradient>
+    <pattern id="dots" width="24" height="24" patternUnits="userSpaceOnUse">
+      <circle cx="2" cy="2" r="1.2" fill="#ffffff" opacity="0.06"/>
+    </pattern>
+  </defs>
+
+  <rect width="1200" height="280" fill="url(#bg)"/>
+  <rect width="1200" height="280" fill="url(#dots)"/>
+
+  <!-- Real data table -->
+  <g transform="translate(330 70)">
+    <rect width="150" height="120" rx="10" fill="#ffffff" opacity="0.08" stroke="#ffffff" stroke-opacity="0.35"/>
+    <rect width="150" height="26" rx="10" fill="#ffffff" opacity="0.18"/>
+    <g fill="#cbd5e1" opacity="0.85">
+      <rect x="14" y="40" width="34" height="10" rx="3"/><rect x="58" y="40" width="34" height="10" rx="3"/><rect x="102" y="40" width="34" height="10" rx="3"/>
+      <rect x="14" y="62" width="34" height="10" rx="3"/><rect x="58" y="62" width="34" height="10" rx="3"/><rect x="102" y="62" width="34" height="10" rx="3"/>
+      <rect x="14" y="84" width="34" height="10" rx="3"/><rect x="58" y="84" width="34" height="10" rx="3"/><rect x="102" y="84" width="34" height="10" rx="3"/>
+    </g>
+    <text x="75" y="150" fill="#e2e8f0" font-family="Poppins, Arial, sans-serif" font-size="15" text-anchor="middle">Real data</text>
+  </g>
+
+  <!-- Generator: GAN / LLM with privacy shield -->
+  <g transform="translate(600 130)">
+    <path d="M-110 0 H-46" stroke="#94a3b8" stroke-width="3" stroke-dasharray="6 6"/>
+    <path d="M46 0 H104" stroke="#94a3b8" stroke-width="3" stroke-dasharray="6 6"/>
+    <path d="M98 -7 L110 0 L98 7" fill="none" stroke="#94a3b8" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M0 -52 L40 -36 V2 C40 28 22 44 0 54 C-22 44 -40 28 -40 2 V-36 Z" fill="#3b82f6" opacity="0.9"/>
+    <rect x="-13" y="-6" width="26" height="22" rx="4" fill="#ffffff"/>
+    <path d="M-8 -6 V-13 A8 8 0 0 1 8 -13 V-6" fill="none" stroke="#ffffff" stroke-width="4"/>
+    <text x="0" y="90" fill="#e2e8f0" font-family="Poppins, Arial, sans-serif" font-size="15" text-anchor="middle">GAN · LLM</text>
+  </g>
+
+  <!-- Synthetic data table -->
+  <g transform="translate(720 70)">
+    <rect width="150" height="120" rx="10" fill="#3b82f6" opacity="0.12" stroke="#93c5fd" stroke-opacity="0.6"/>
+    <rect width="150" height="26" rx="10" fill="#3b82f6" opacity="0.3"/>
+    <g fill="#93c5fd" opacity="0.9">
+      <rect x="14" y="40" width="34" height="10" rx="3"/><rect x="58" y="40" width="34" height="10" rx="3"/><rect x="102" y="40" width="34" height="10" rx="3"/>
+      <rect x="14" y="62" width="34" height="10" rx="3"/><rect x="58" y="62" width="34" height="10" rx="3"/><rect x="102" y="62" width="34" height="10" rx="3"/>
+      <rect x="14" y="84" width="34" height="10" rx="3"/><rect x="58" y="84" width="34" height="10" rx="3"/><rect x="102" y="84" width="34" height="10" rx="3"/>
+    </g>
+    <text x="75" y="150" fill="#e2e8f0" font-family="Poppins, Arial, sans-serif" font-size="15" text-anchor="middle">Synthetic data</text>
+  </g>
+
+  <text x="600" y="42" fill="#cbd5e1" font-family="Poppins, Arial, sans-serif" font-size="14" letter-spacing="3" text-anchor="middle">FIDELITY  ·  UTILITY  ·  PRIVACY</text>
+</svg>

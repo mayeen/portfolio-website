@@ -1,22 +1,84 @@
 {
   "name": "Kazi Mostafa Shahriar",
   "shortName": "Shahriar",
-  "title": "Full-stack Developer",
-  "summary": "**Full-stack engineer** with **5 years** at **multinational companies** and **2+ years** as a **working student** in **Germany**. **M.Sc.** in **Web and Data Science**, with a focus on exploring **data science** and **AI applications**. Passionate about solving algorithmic problems and writing clean, scalable code in team settings. Skilled in building platform-independent solutions that balance technical quality and business needs.",
-  "about": "Full-stack engineer with 5+ years at multinational companies and 2 years as a working student in Germany. Completed an M.Sc. in Web and Data Science in July 2026. Passionate about solving algorithmic problems and writing clean, scalable code in team settings. Skilled in building platform-independent solutions that balance technical quality and business needs.",
+  "title": "AI/ML Engineer",
+  "location": "Chemnitz, Germany",
+  "summary": "**Software Engineer** with **7+ years** of production experience, specializing in **AI/ML** at **Fraunhofer IKTS**, building **forecasting models**, **agentic tools** and **RAG-based analytics** in **Python**.",
+  "about": "AI/ML engineer based in Chemnitz, Germany, with 7+ years of production software experience: 5 years as a full-stack .NET and Angular developer in Bangladesh, followed by 4 years as a working student at Baqend and Fraunhofer IKTS in Germany. M.Sc. in Web and Data Science from the University of Koblenz and Microsoft Certified: Azure AI Fundamentals.",
   "stats": [
-    { "icon": "bx bx-award", "label": "Full time Experience", "value": "5 years" },
-    { "icon": "bx bx-briefcase-alt", "label": "Working Student", "value": "2 years" },
-    { "icon": "bx bx-support", "label": "Code Lover", "value": "For life" }
+    {
+      "icon": "bx bx-award",
+      "label": "Full time Experience",
+      "value": "5 years"
+    },
+    {
+      "icon": "bx bx-briefcase-alt",
+      "label": "Working Student",
+      "value": "4 years"
+    },
+    {
+      "icon": "bx bx-support",
+      "label": "Code Lover",
+      "value": "For life"
+    }
   ],
   "contact": {
     "email": "km.shahriar28@gmail.com",
-    "phone": "+49-152-1233-6476",
+    "phone": "+49 1521 233 6476",
     "whatsapp": "4915212336476",
     "linkedinHandle": "Kazishahriar"
   },
+  "website": "https://kazishahriar.netlify.app/",
   "socials": [
-    { "platform": "LinkedIn", "url": "https://www.linkedin.com/in/kazishahriar/", "icon": "bx bxl-linkedin-square" },
-    { "platform": "GitHub", "url": "https://github.com/mayeen", "icon": "bx bxl-github" }
-  ]
+    {
+      "platform": "LinkedIn",
+      "url": "https://www.linkedin.com/in/kazishahriar/",
+      "icon": "bx bxl-linkedin-square"
+    },
+    {
+      "platform": "GitHub",
+      "url": "https://github.com/mayeen",
+      "icon": "bx bxl-github"
+    }
+  ],
+  "languages": [
+    {
+      "language": "German",
+      "level": "B1 - Conversational"
+    },
+    {
+      "language": "English",
+      "level": "C1 - Bilingual Proficiency"
+    }
+  ],
+  "downloads": [
+    {
+      "label": "AI/ML Engineer CV (English)",
+      "role": "ai",
+      "lang": "en",
+      "file": "/cv/Kazi_Mostafa_Shahriar_CV_AI_Engineer_EN.pdf"
+    },
+    {
+      "label": "AI/ML Engineer CV (Deutsch)",
+      "role": "ai",
+      "lang": "de",
+      "file": "/cv/Kazi_Mostafa_Shahriar_CV_AI_Engineer_DE.pdf"
+    },
+    {
+      "label": "Software Engineer CV (English)",
+      "role": "software",
+      "lang": "en",
+      "file": "/cv/Kazi_Mostafa_Shahriar_CV_Software_Engineer_EN.pdf"
+    },
+    {
+      "label": "Software Engineer CV (Deutsch)",
+      "role": "software",
+      "lang": "de",
+      "file": "/cv/Kazi_Mostafa_Shahriar_CV_Software_Engineer_DE.pdf"
+    }
+  ],
+  "cv": {
+    "en": "/cv/Kazi_Mostafa_Shahriar_CV_AI_Engineer_EN.pdf",
+    "de": "/cv/Kazi_Mostafa_Shahriar_CV_AI_Engineer_DE.pdf"
+  }
 }

@@ -1,11 +1,11 @@
 [
   {
-    "id": "ai-900",
+    "id": "azure-ai-fundamentals",
     "name": "Microsoft Certified: Azure AI Fundamentals",
-    "code": "AI-900",
+    "code": "AI-901",
     "issuer": "Microsoft",
     "icon": "bx bxl-microsoft",
-    "image": "/images/certifications/ai-900.jpeg",
+    "image": "/images/certifications/azure-ai-fundamentals.jpeg",
     "issueDate": "2026-10-07",
     "credentialId": "73EDB878B502645",
     "certificationNumber": "7B2731-3796Z2",

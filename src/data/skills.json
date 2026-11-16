@@ -1,52 +1,137 @@
 [
   {
-    "id": "languages",
-    "name": "Programming Languages",
+    "id": "ai-core",
+    "name": "AI/ML Core",
     "skills": [
-      { "name": "C#", "level": "Advanced" },
-      { "name": "Python", "level": "Intermediate" },
-      { "name": "JavaScript", "level": "Advanced" },
-      { "name": "Scala", "level": "Basic" },
-      { "name": "TypeScript", "level": "Intermediate" },
-      { "name": "HTML/CSS", "level": "Advanced" },
-      { "name": "Java", "level": "Intermediate" }
+      {
+        "name": "Generative AI"
+      },
+      {
+        "name": "LLMs"
+      },
+      {
+        "name": "RAG"
+      },
+      {
+        "name": "Agentic AI"
+      },
+      {
+        "name": "Model Evaluation"
+      }
     ]
   },
   {
-    "id": "frameworks",
-    "name": "Frameworks",
+    "id": "ai-frameworks",
+    "name": "AI/ML Frameworks",
     "skills": [
-      { "name": "ASP.NET", "level": "Advanced" },
-      { "name": ".NET Core", "level": "Advanced" },
-      { "name": "React", "level": "Intermediate" },
-      { "name": "Angular", "level": "Advanced" },
-      { "name": "NodeJs", "level": "Intermediate" },
-      { "name": "Entity Framework", "level": "Advanced" }
+      {
+        "name": "TensorFlow"
+      },
+      {
+        "name": "Keras"
+      },
+      {
+        "name": "PyTorch"
+      },
+      {
+        "name": "LangChain"
+      },
+      {
+        "name": "scikit-learn"
+      },
+      {
+        "name": "CUDA"
+      }
+    ]
+  },
+  {
+    "id": "programming",
+    "name": "Programming",
+    "skills": [
+      {
+        "name": "Python"
+      },
+      {
+        "name": "JavaScript"
+      },
+      {
+        "name": "TypeScript"
+      },
+      {
+        "name": "C#"
+      },
+      {
+        "name": "SQL"
+      }
+    ]
+  },
+  {
+    "id": "cloud-mlops",
+    "name": "Cloud & MLOps",
+    "skills": [
+      {
+        "name": "Microsoft Azure"
+      },
+      {
+        "name": "AWS"
+      },
+      {
+        "name": "Docker"
+      },
+      {
+        "name": "Kubernetes"
+      },
+      {
+        "name": "Jenkins"
+      }
+    ]
+  },
+  {
+    "id": "backend-frontend",
+    "name": "Backend & Frontend",
+    "skills": [
+      {
+        "name": ".NET"
+      },
+      {
+        "name": "React"
+      },
+      {
+        "name": "Angular"
+      },
+      {
+        "name": "FastAPI"
+      }
+    ]
+  },
+  {
+    "id": "databases",
+    "name": "Databases",
+    "skills": [
+      {
+        "name": "SQL Server"
+      },
+      {
+        "name": "MongoDB"
+      },
+      {
+        "name": "Chroma"
+      }
     ]
   },
   {
     "id": "tools",
-    "name": "Tools & Infrastructure",
+    "name": "Tools",
     "skills": [
-      { "name": "Git", "level": "Advanced" },
-      { "name": "GitHub", "level": "Advanced" },
-      { "name": "Jira", "level": "Advanced" },
-      { "name": "Redis", "level": "Intermediate" },
-      { "name": "Docker", "level": "Intermediate" },
-      { "name": "Jenkins", "level": "Intermediate" },
-      { "name": "AWS", "level": "Intermediate" },
-      { "name": "SQL Server", "level": "Advanced" }
-    ]
-  },
-  {
-    "id": "methodologies",
-    "name": "Methodologies & Practices",
-    "skills": [
-      { "name": "Design Patterns", "level": "Advanced" },
-      { "name": "Agile", "level": "Advanced" },
-      { "name": "Microservice", "level": "Intermediate" },
-      { "name": "RESTful API", "level": "Advanced" },
-      { "name": "SOAP", "level": "Intermediate" }
+      {
+        "name": "Git"
+      },
+      {
+        "name": "GitHub"
+      },
+      {
+        "name": "Jira"
+      }
     ]
   }
 ]

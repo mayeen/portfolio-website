@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 const SkillCategory = ({ category }) => {
     // Two columns; the first gets the extra item when the count is odd.
     const half = Math.ceil(category.skills.length / 2);
-    const groups = [category.skills.slice(0, half), category.skills.slice(half)];
+    const groups = [category.skills.slice(0, half), category.skills.slice(half)].filter((group) => group.length);
 
     return (
         <div className="skills__content">
@@ -18,7 +18,7 @@ const SkillCategory = ({ category }) => {
                                 <i className='bx bx-badge-check'></i>
                                 <div>
                                     <h3 className="skills__name">{skill.name}</h3>
-                                    <span className="skills__level">{skill.level}</span>
+                                    {skill.level && <span className="skills__level">{skill.level}</span>}
                                 </div>
                             </div>
                         ))}
@@ -34,7 +34,7 @@ SkillCategory.propTypes = {
         name: PropTypes.string.isRequired,
         skills: PropTypes.arrayOf(PropTypes.shape({
             name: PropTypes.string.isRequired,
-            level: PropTypes.string.isRequired,
+            level: PropTypes.string,
         })).isRequired,
     }).isRequired,
 };

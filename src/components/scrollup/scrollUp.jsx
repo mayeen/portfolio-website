@@ -1,13 +1,18 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import "./scrollup.css"
+
 const ScrollUp = () => {
-    window.addEventListener("scroll",function (){
-        const scrollUp = document.querySelector(".scrollup");
-        if(this.scrollY >= 560) scrollUp.classList.add("show-scroll");
-        else scrollUp.classList.remove("show-scroll")
-    })
+    const [isVisible, setIsVisible] = useState(false);
+
+    // Show the button once the page is scrolled past the hero.
+    useEffect(() => {
+        const onScroll = () => setIsVisible(window.scrollY >= 560);
+        window.addEventListener('scroll', onScroll);
+        return () => window.removeEventListener('scroll', onScroll);
+    }, []);
+
     return (
-        <a href="#home" className="scrollup">
+        <a href="#home" className={isVisible ? 'scrollup show-scroll' : 'scrollup'} aria-label="Scroll to top">
             <i className="uil uil-arrow-up scrollup__icon"></i>
         </a>
     )

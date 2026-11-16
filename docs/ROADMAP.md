@@ -27,6 +27,9 @@ Last updated: 2026-11-16.
 | Job-match score | LLM returns structured fields; **score is computed in code** | Consistent and explainable, not a vibe number |
 | Email cover letter + CV | **Deferred** to a later iteration | Highest abuse risk; build after guardrails are proven |
 | Book a call | **Skipped** this iteration | Not needed yet |
+| Multiple CV versions | One master `cv.md` holds role-specific wording (`ai`, `software`, later `frontend`) per job/project; facts (title, company, dates, location) stored once | Each CV version tailors wording, not facts; a single place for facts prevents drift |
+| Website positioning | Website shows **only the AI Engineer wording**; no role toggle. All roles and dates always shown | AI Engineer is the target role; recruiters cross-check CV/LinkedIn, so facts are never hidden |
+| Role-aware chatbot | Chatbot and job match read **all** role versions and answer from the most relevant one | e.g. a .NET question is answered from the `software` wording |
 
 ## Architecture
 
@@ -68,17 +71,18 @@ Inline emphasis uses `**bold**` markdown in strings.
 | # | Phase | Output | Status |
 |---|---|---|---|
 | 1 | Refactor frontend to render from JSON data; add Certifications section | Same site, data in `src/data/` | Done |
-| 2 | Define `content/cv.md` format + parser that produces the JSON | Single source of truth | Todo |
+| 2 | Define master `content/cv.md` format (shared facts + per-role wording) + parser that outputs the `ai` version as site JSON | Single source of truth | Done (review pending) |
 | 3 | Move hosting Netlify -> Azure Static Web Apps; `/api/content` + Cosmos DB seed; local JSON fallback | Site reads from DB | Todo |
-| 4 | Ingestion script: PDF -> Document Intelligence -> Azure OpenAI -> `cv.md` -> PR | Upload CV, review, merge | Todo |
+| 4 | Ingestion script: one or more role CV PDFs -> Document Intelligence -> Azure OpenAI -> merge into `cv.md` (flag fact conflicts between CVs) -> PR | Upload CVs, review, merge | Todo |
 | 5 | Chatbot `/api/chat`: streaming, grounded on cv.md, guardrails | Q&A about experience | Todo |
 | 6 | Job match `/api/match` + UI (score, matched/missing skills) | Match score | Todo |
-| 7 | Extras: German/English toggle, recruiter-question analytics, tailored CV view, GitHub project auto-sync | — | Todo |
+| 7 | Extras: German/English toggle, recruiter-question analytics, GitHub project auto-sync | — | Todo |
 | 8 | (Later) Apply flow: cover letter + CV email via Azure Communication Services | — | Deferred |
 
 ## Feature notes
 
 ### Chatbot
+- Role-aware: picks the role wording (`ai`, `software`, ...) that best fits the question.
 - System prompt: answer only from `cv.md`; say so when information is not in the CV; never invent facts.
 - Keep ~10 turns of history; cap `max_tokens`.
 
@@ -93,7 +97,7 @@ The score (0–100) is computed in code from weighted required / nice-to-have ma
 ### Extras (approved)
 1. **German/English toggle**: LLM answers in the visitor's language at no extra cost.
 2. **Recruiter-question analytics**: log anonymized questions and match gaps to Cosmos DB; weekly review.
-3. **Tailored CV view**: after a match, a shareable link showing the CV reordered for that job.
+3. ~~Tailored CV view~~: dropped; the website shows one (AI Engineer) version and the chatbot handles role-specific questions.
 4. **GitHub auto-sync**: daily GitHub Action refreshes project stars, languages, last update.
 
 ### Apply flow (deferred): required safeguards when built
