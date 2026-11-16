@@ -1,0 +1,22 @@
+{
+  "name": "Kazi Mostafa Shahriar",
+  "shortName": "Shahriar",
+  "title": "Full-stack Developer",
+  "summary": "**Full-stack engineer** with **5 years** at **multinational companies** and **2+ years** as a **working student** in **Germany**. **M.Sc.** in **Web and Data Science**, with a focus on exploring **data science** and **AI applications**. Passionate about solving algorithmic problems and writing clean, scalable code in team settings. Skilled in building platform-independent solutions that balance technical quality and business needs.",
+  "about": "Full-stack engineer with 5+ years at multinational companies and 2 years as a working student in Germany. Completed an M.Sc. in Web and Data Science in July 2026. Passionate about solving algorithmic problems and writing clean, scalable code in team settings. Skilled in building platform-independent solutions that balance technical quality and business needs.",
+  "stats": [
+    { "icon": "bx bx-award", "label": "Full time Experience", "value": "5 years" },
+    { "icon": "bx bx-briefcase-alt", "label": "Working Student", "value": "2 years" },
+    { "icon": "bx bx-support", "label": "Code Lover", "value": "For life" }
+  ],
+  "contact": {
+    "email": "km.shahriar28@gmail.com",
+    "phone": "+49-152-1233-6476",
+    "whatsapp": "4915212336476",
+    "linkedinHandle": "Kazishahriar"
+  },
+  "socials": [
+    { "platform": "LinkedIn", "url": "https://www.linkedin.com/in/kazishahriar/", "icon": "bx bxl-linkedin-square" },
+    { "platform": "GitHub", "url": "https://github.com/mayeen", "icon": "bx bxl-github" }
+  ]
+}

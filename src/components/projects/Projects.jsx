@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import './projects.css';
-import { projectsData } from './Data';
+import { projects as projectsData } from '../../data';
 import ProjectsCard from './ProjectsCard';
 
 const Projects = () => {
@@ -33,13 +33,10 @@ const Projects = () => {
                         <div className="projects__slides">
                             {projectsData.map((project, index) => (
                                 <div
-                                    key={index}
+                                    key={project.id}
                                     className={`projects__slide ${currentProject === index ? 'projects__slide-active' : ''}`}
                                 >
-                                    <ProjectsCard
-                                        key={index}
-                                        project={project}
-                                    />
+                                    <ProjectsCard project={project} />
                                 </div>
                             ))}
                         </div>

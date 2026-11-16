@@ -3,6 +3,7 @@ import './about.css';
 import AboutImg from "../../assets/profile2.jpg"
 import CV from "../../assets/cv.pdf"
 import Info from "./Info";
+import { profile } from '../../data';
 
 const About = () => {
     return (
@@ -10,13 +11,11 @@ const About = () => {
             <h2 className="section__title">About Me</h2>
             <span className="section__subtitle">My Introduction</span>
             <div className="about__container container grid">
-                <img src={AboutImg} alt="" className="about__img"/>
+                <img src={AboutImg} alt={profile.name} className="about__img"/>
                 <div className="about__data">
                     <Info />
 
-                    <p className="about__description">
-                        Full-stack engineer with 5+ years at multinational companies and 2 years as a working student in Germany. Currently pursuing an M.Sc. in Data Science. Passionate about solving algorithmic problems and writing clean, scalable code in team settings. Skilled in building platform-independent solutions that balance technical quality and business needs.
-                    </p>
+                    <p className="about__description">{profile.about}</p>
 
                     <a download="" href={CV} className="button button--flex">Download CV
                         <svg

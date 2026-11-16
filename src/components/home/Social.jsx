@@ -1,15 +1,21 @@
 import React from 'react'
+import { profile } from '../../data';
 
 const Social = () => {
     return (
         <div className="home__social">
-            <a href="https://www.linkedin.com/in/kazishahriar/" className="home__social-icon"
-               target="_blank" rel="noreferrer">
-                <i className='bx bxl-linkedin-square contact__card-icon'></i>
-            </a>
-            <a href="https://github.com/mayeen" className="home__social-icon" target="_blank" rel="noreferrer">
-                <i className='bx bxl-github contact__card-icon'></i>
-            </a>
+            {profile.socials.map((social) => (
+                <a
+                    key={social.platform}
+                    href={social.url}
+                    className="home__social-icon"
+                    target="_blank"
+                    rel="noreferrer"
+                    aria-label={social.platform}
+                >
+                    <i className={`${social.icon} contact__card-icon`}></i>
+                </a>
+            ))}
         </div>
     )
 }

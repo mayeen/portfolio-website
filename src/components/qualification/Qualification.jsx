@@ -1,12 +1,147 @@
-import React, {useState} from 'react'
+import React, { useState } from 'react'
+import PropTypes from 'prop-types';
 import './qualification.css';
+import { experience, education } from '../../data';
+import RichText from '../../utils/RichText';
+import { formatDateRange } from '../../utils/date';
+
+const TABS = [
+    { id: 'experience', label: 'Experience', icon: 'uil uil-briefcase-alt' },
+    { id: 'education', label: 'Education', icon: 'uil uil-graduation-cap' },
+];
+
+const Timeline = () => (
+    <div>
+        <span className="qualification__rounder"></span>
+        <span className="qualification__line"></span>
+    </div>
+);
+
+// Items alternate left/right of the timeline.
+const TimelineItem = ({ index, children }) => (
+    <div className="qualification__data">
+        {index % 2 === 0 ? (
+            <>
+                <div>{children}</div>
+                <Timeline />
+            </>
+        ) : (
+            <>
+                <div></div>
+                <Timeline />
+                <div>{children}</div>
+            </>
+        )}
+    </div>
+);
+
+TimelineItem.propTypes = {
+    index: PropTypes.number.isRequired,
+    children: PropTypes.node.isRequired,
+};
+
+const Header = ({ title, subtitle, startDate, endDate, location }) => (
+    <>
+        <h3 className="qualification__title">{title}</h3>
+        <span className="qualification__subtitle">{subtitle}</span>
+        <div className="qualification__calendar-location">
+            <span><i className="uil uil-calendar-alt"></i> {formatDateRange(startDate, endDate)}</span>
+            <span><i className="uil uil-location-point"></i> {location}</span>
+        </div>
+    </>
+);
+
+Header.propTypes = {
+    title: PropTypes.string.isRequired,
+    subtitle: PropTypes.string.isRequired,
+    startDate: PropTypes.string,
+    endDate: PropTypes.string,
+    location: PropTypes.string.isRequired,
+};
+
+const ExperienceItem = ({ item }) => (
+    <>
+        <Header
+            title={item.role}
+            subtitle={item.company}
+            startDate={item.startDate}
+            endDate={item.endDate}
+            location={item.location}
+        />
+        <div className="qualification__company-desc">{item.summary}</div>
+        <span className="qualification__tech-title">Responsibilities:</span>
+        <ul className="qualification__bullet-list">
+            {item.bullets.map((bullet) => (
+                <li key={bullet}><RichText text={bullet} /></li>
+            ))}
+        </ul>
+        <div className="qualification__tech">
+            <span className="qualification__tech-title">Key Technologies:</span>
+            <div className="qualification__tech-items">
+                {item.technologies.map((tech) => (
+                    <span key={tech} className="qualification__tech-item">{tech}</span>
+                ))}
+            </div>
+        </div>
+    </>
+);
+
+ExperienceItem.propTypes = {
+    item: PropTypes.shape({
+        role: PropTypes.string.isRequired,
+        company: PropTypes.string.isRequired,
+        location: PropTypes.string.isRequired,
+        startDate: PropTypes.string,
+        endDate: PropTypes.string,
+        summary: PropTypes.string.isRequired,
+        bullets: PropTypes.arrayOf(PropTypes.string).isRequired,
+        technologies: PropTypes.arrayOf(PropTypes.string).isRequired,
+    }).isRequired,
+};
+
+const EducationItem = ({ item }) => (
+    <>
+        <Header
+            title={item.degree}
+            subtitle={item.institution}
+            startDate={item.startDate}
+            endDate={item.endDate}
+            location={item.location}
+        />
+        {item.coursework.length > 0 && (
+            <>
+                <div className="qualification__company-desc">Core Curriculum:</div>
+                <ul className="qualification__bullet-list">
+                    <li>{item.coursework.join(', ')}</li>
+                </ul>
+            </>
+        )}
+    </>
+);
+
+EducationItem.propTypes = {
+    item: PropTypes.shape({
+        degree: PropTypes.string.isRequired,
+        institution: PropTypes.string.isRequired,
+        location: PropTypes.string.isRequired,
+        startDate: PropTypes.string,
+        endDate: PropTypes.string,
+        coursework: PropTypes.arrayOf(PropTypes.string).isRequired,
+    }).isRequired,
+};
 
 const Qualification = () => {
-    const [toggleState, setToggleState] = useState(1);
+    const [activeTab, setActiveTab] = useState('experience');
 
-    const toggleTab = (index) => {
-        setToggleState(index);
-    }
+    const sections = {
+        experience: experience.map((item, index) => (
+            <TimelineItem key={item.id} index={index}><ExperienceItem item={item} /></TimelineItem>
+        )),
+        education: education.map((item, index) => (
+            <TimelineItem key={item.id} index={index}><EducationItem item={item} /></TimelineItem>
+        )),
+    };
+
     return (
         <section className="qualification section" id="qualification">
             <h2 className="section__title">Qualification</h2>
@@ -14,264 +149,26 @@ const Qualification = () => {
 
             <div className="qualification__container container">
                 <div className="qualification__tabs">
-                    <div className={
-                        toggleState === 1
-                            ? "qualification__button qualification__active button--flex"
-                            : "qualification__button button--flex"
-                    }
-                         onClick={() => toggleTab(1)}>
-                        <i className="uil uil-briefcase-alt qualification__icon"></i>Experience
-                    </div>
-
-                    <div className={
-                        toggleState === 2
-                            ? "qualification__button qualification__active button--flex"
-                            : "qualification__button button--flex"
-                    }
-                         onClick={() => toggleTab(2)}
-                    >
-                        <i className="uil uil-graduation-cap qualification__icon"></i>Education
-                    </div>
+                    {TABS.map((tab) => (
+                        <div
+                            key={tab.id}
+                            className={`qualification__button button--flex${activeTab === tab.id ? ' qualification__active' : ''}`}
+                            onClick={() => setActiveTab(tab.id)}
+                        >
+                            <i className={`${tab.icon} qualification__icon`}></i>{tab.label}
+                        </div>
+                    ))}
                 </div>
 
                 <div className="qualification__sections">
-                    <div className={
-                        toggleState === 1
-                            ? "qualification__content qualification__content-active"
-                            : "qualification__content"
-                    }>
-                        <div className="qualification__data">
-                            <div>
-                                <h3 className="qualification__title">Research Assistant - Student Work</h3>
-                                <span className="qualification__subtitle">Fraunhofer IKTS</span>
-                                <div className="qualification__calendar-location">
-                                    <span><i className="uil uil-calendar-alt"></i> 05/2025 - present</span>
-                                    <span><i className="uil uil-location-point"></i> Dresden, Germany</span>
-                                </div>
-                                <div className="qualification__company-desc">
-                                    European industry project on wastewater and industrial processes
-                                </div>
-                                <span className="qualification__tech-title">Responsibilities:</span>
-                                <ul className="qualification__bullet-list">
-                                    <li>Conducted analysis of large-scale <b>time-series sensor data</b> from wastewater and industrial processes within a European industry project.</li>
-                                    <li>Designed and trained <b>machine learning models</b> for thermal energy recovery and effluent temperature forecasting, achieving <b>RMSE of 1.3</b> and <b>accuracy of 91%</b>.</li>
-                                    <li>Developed and validated <b>simulation pipelines</b> to assess seasonal cooling strategies and optimize energy efficiency.</li>
-                                </ul>
-                                <div className="qualification__tech">
-                                    <span className="qualification__tech-title">Key Technologies:</span>
-                                    <div className="qualification__tech-items">
-                                        <span className="qualification__tech-item">Python</span>
-                                        <span className="qualification__tech-item">TensorFlow</span>
-                                        <span className="qualification__tech-item">Docker</span>
-                                    </div>
-                                </div>
-                            </div>
-                            <div>
-                                <span className="qualification__rounder"></span>
-                                <span className="qualification__line"></span>
-                            </div>
+                    {TABS.map((tab) => (
+                        <div
+                            key={tab.id}
+                            className={`qualification__content${activeTab === tab.id ? ' qualification__content-active' : ''}`}
+                        >
+                            {sections[tab.id]}
                         </div>
-
-                        <div className="qualification__data">
-                            <div></div>
-
-                            <div>
-                                <span className="qualification__rounder"></span>
-                                <span className="qualification__line"></span>
-                            </div>
-
-                            <div>
-                                <h3 className="qualification__title">Product Integration Engineer - Student Work</h3>
-                                <span className="qualification__subtitle">Baqend Gmbh</span>
-                                <div className="qualification__calendar-location">
-                                    <span><i className="uil uil-calendar-alt"></i> 09/2022 - 04/2025</span>
-                                    <span><i className="uil uil-location-point"></i> Germany</span>
-                                </div>
-                                <div className="qualification__company-desc">
-                                    Accelerating clients' websites using HTML caching mechanisms
-                                </div>
-                                <span className="qualification__tech-title">Responsibilities:</span>
-                                <ul className="qualification__bullet-list">
-                                    <li>Optimized client code to improve Web Vitals (<b>LCP</b>, <b>FCP</b>, <b>CLS</b>) using <b>JavaScript</b>, <b>Regex</b>, and <b>CSS</b>, achieving up to <b>400% faster</b> response time.</li>
-                                    <li>Integrated our product (<b>SpeedKit</b>) into client applications, leveraging caching mechanisms and predictive preloading of HTML to enhance performance.</li>
-                                    <li>Developed and maintained the integration projects using <b>TypeScript</b>, ensuring efficient and scalable solutions.</li>
-                                    <li>Conducted <b>black-box testing</b> to validate system functionalities and ensure high performance and stability.</li>
-                                </ul>
-                                <div className="qualification__tech">
-                                    <span className="qualification__tech-title">Key Technologies:</span>
-                                    <div className="qualification__tech-items">
-                                        <span className="qualification__tech-item">JavaScript</span>
-                                        <span className="qualification__tech-item">TypeScript</span>
-                                        <span className="qualification__tech-item">RegEx</span>
-                                        <span className="qualification__tech-item">HTML</span>
-                                        <span className="qualification__tech-item">CSS</span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div className="qualification__data">
-                            <div>
-                                <h3 className="qualification__title">System Developer</h3>
-                                <span className="qualification__subtitle">Hogarth Dhaka</span>
-                                <div className="qualification__calendar-location">
-                                    <span><i className="uil uil-calendar-alt"></i> 04/2019 - 03/2022</span>
-                                    <span><i className="uil uil-location-point"></i> Bangladesh</span>
-                                </div>
-                                <div className="qualification__company-desc">
-                                    Software solution provider for foreign clients
-                                </div>
-                                <span className="qualification__tech-title">Responsibilities:</span>
-                                <ul className="qualification__bullet-list">
-                                    <li>Built scalable <b>C# (.NET)</b> backends and <b>RESTful APIs</b>, enhancing system interoperability by <b>40%</b>.</li>
-                                    <li>Implementing robust front-end using <b>Angular</b>, <b>Bootstrap</b> while working side by side with off-shore client designers.</li>
-                                    <li>Integrated <b>30+ third-party APIs</b> to enhance product functionality and user experience.</li>
-                                    <li>Developed internal tools for asynchronous/scheduled workflows, reducing manual effort by <b>75%</b> and accelerating task completion.</li>
-                                    <li>Followed <b>Agile</b> methodology and <b>Scrum</b> for efficient development and delivery.</li>
-                                </ul>
-                                <div className="qualification__tech">
-                                    <span className="qualification__tech-title">Key Technologies:</span>
-                                    <div className="qualification__tech-items">
-                                        <span className="qualification__tech-item">C#</span>
-                                        <span className="qualification__tech-item">.Net Core</span>
-                                        <span className="qualification__tech-item">Angular</span>
-                                        <span className="qualification__tech-item">RESTful API</span>
-                                        <span className="qualification__tech-item">SQLServer</span>
-                                        <span className="qualification__tech-item">AWS</span>
-                                        <span className="qualification__tech-item">Microservice</span>
-                                        <span className="qualification__tech-item">Git</span>
-                                        <span className="qualification__tech-item">Jira</span>
-                                    </div>
-                                </div>
-                            </div>
-                            <div>
-                                <span className="qualification__rounder"></span>
-                                <span className="qualification__line"></span>
-                            </div>
-                        </div>
-
-                        <div className="qualification__data">
-                            <div></div>
-
-                            <div>
-                                <span className="qualification__rounder"></span>
-                                <span className="qualification__line"></span>
-                            </div>
-
-                            <div>
-                                <h3 className="qualification__title">Junior Software Developer</h3>
-                                <span className="qualification__subtitle">Totaltel Private Ltd.</span>
-                                <div className="qualification__calendar-location">
-                                    <span><i className="uil uil-calendar-alt"></i> 06/2017 - 04/2019</span>
-                                    <span><i className="uil uil-location-point"></i> Bangladesh</span>
-                                </div>
-                                <div className="qualification__company-desc">
-                                    Provides telecommunication-based solutions to government run organization
-                                </div>
-                                <span className="qualification__tech-title">Responsibilities:</span>
-                                <ul className="qualification__bullet-list">
-                                    <li>Built a scalable <b>.NET MVC</b> clinic management system, supporting <b>15+ clinics</b> and reducing admin workload by <b>30%</b>.</li>
-                                    <li>Collaborated with clients for requirement analysis and <b>black-box testing</b> to ensure quality.</li>
-                                    <li>Integrated authenticator device SDK to develop a custom authentication app for a government project using <b>ASP.NET Web API</b>.</li>
-                                </ul>
-                                <div className="qualification__tech">
-                                    <span className="qualification__tech-title">Key Technologies:</span>
-                                    <div className="qualification__tech-items">
-                                        <span className="qualification__tech-item">C#</span>
-                                        <span className="qualification__tech-item">ASP.NET</span>
-                                        <span className="qualification__tech-item">Bootstrap</span>
-                                        <span className="qualification__tech-item">RESTful API</span>
-                                        <span className="qualification__tech-item">SQL Server</span>
-                                        <span className="qualification__tech-item">Blackbox Testing</span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div className={
-                        toggleState === 2
-                            ? "qualification__content qualification__content-active"
-                            : "qualification__content"
-                    }>
-                        <div className="qualification__data">
-                            <div>
-                                <h3 className="qualification__title">M.Sc. in Web and Data Science</h3>
-                                <span className="qualification__subtitle">Universität Koblenz</span>
-                                <div className="qualification__calendar-location">
-                                    <span><i className="uil uil-calendar-alt"></i> 04/2022 - 09/2025</span>
-                                    <span><i className="uil uil-location-point"></i> Germany</span>
-                                </div>
-                                <div className="qualification__company-desc">
-                                    Core Curriculum:
-                                </div>
-                                <ul className="qualification__bullet-list">
-                                    <li>Web Science, Engineering Web & Data Intensive System, Data Science, Big Data Analysis</li>
-                                </ul>
-                            </div>
-                            <div>
-                                <span className="qualification__rounder"></span>
-                                <span className="qualification__line"></span>
-                            </div>
-                        </div>
-
-                        <div className="qualification__data">
-                            <div></div>
-
-                            <div>
-                                <span className="qualification__rounder"></span>
-                                <span className="qualification__line"></span>
-                            </div>
-
-                            <div>
-                                <h3 className="qualification__title">B.Sc. in Computer Science and Engineering</h3>
-                                <span className="qualification__subtitle">Ahsanullah University of Science & Technology</span>
-                                <div className="qualification__calendar-location">
-                                    <span><i className="uil uil-calendar-alt"></i> 07/2013 - 06/2017</span>
-                                    <span><i className="uil uil-location-point"></i> Bangladesh</span>
-                                </div>
-                                <div className="qualification__company-desc">
-                                    Core Curriculum:
-                                </div>
-                                <ul className="qualification__bullet-list">
-                                    <li>Algorithm, Data Structure, Object Oriented Programming, Software Engineering</li>
-                                </ul>
-                            </div>
-                        </div>
-
-                        <div className="qualification__data">
-                            <div>
-                                <h3 className="qualification__title">Higher Secondary Certificate</h3>
-                                <span className="qualification__subtitle">Rajuk Uttara Model College</span>
-                                <div className="qualification__calendar-location">
-                                    <span><i className="uil uil-calendar-alt"></i> 2012</span>
-                                    <span><i className="uil uil-location-point"></i> Bangladesh</span>
-                                </div>
-                            </div>
-                            <div>
-                                <span className="qualification__rounder"></span>
-                                <span className="qualification__line"></span>
-                            </div>
-                        </div>
-
-                        <div className="qualification__data">
-                            <div></div>
-
-                            <div>
-                                <span className="qualification__rounder"></span>
-                                <span className="qualification__line"></span>
-                            </div>
-
-                            <div>
-                                <h3 className="qualification__title">Secondary School Certificate</h3>
-                                <span className="qualification__subtitle">Rajuk Uttara Model College</span>
-                                <div className="qualification__calendar-location">
-                                    <span><i className="uil uil-calendar-alt"></i> 2010</span>
-                                    <span><i className="uil uil-location-point"></i> Bangladesh</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                    ))}
                 </div>
             </div>
         </section>

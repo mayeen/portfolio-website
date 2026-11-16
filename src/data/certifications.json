@@ -1,0 +1,14 @@
+[
+  {
+    "id": "ai-900",
+    "name": "Microsoft Certified: Azure AI Fundamentals",
+    "code": "AI-900",
+    "issuer": "Microsoft",
+    "icon": "bx bxl-microsoft",
+    "image": "/images/certifications/ai-900.jpeg",
+    "issueDate": "2026-10-07",
+    "credentialId": "73EDB878B502645",
+    "certificationNumber": "7B2731-3796Z2",
+    "verifyUrl": null
+  }
+]

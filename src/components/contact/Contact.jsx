@@ -1,6 +1,10 @@
 import React, { useRef, useState } from 'react';
 import './contact.css';
 import emailjs from '@emailjs/browser';
+import { profile } from '../../data';
+
+const { contact } = profile;
+const linkedin = profile.socials.find((s) => s.platform === 'LinkedIn');
 
 const Contact = () => {
     const form = useRef();
@@ -63,8 +67,8 @@ const Contact = () => {
                         <div className="contact__card">
                             <i className="bx bx-mail-send contact__card-icon"></i>
                             <h3 className="contact__card-title">Email</h3>
-                            <span className="contact__card-data">km.shahriar28@gmail.com</span>
-                            <a href="mailto:km.shahriar28@gmail.com" className="contact__button">
+                            <span className="contact__card-data">{contact.email}</span>
+                            <a href={`mailto:${contact.email}`} className="contact__button">
                                 Write me <i className="bx bx-right-arrow-alt contact__button-icon"></i>
                             </a>
                         </div>
@@ -72,8 +76,8 @@ const Contact = () => {
                         <div className="contact__card">
                             <i className="bx bxl-whatsapp contact__card-icon"></i>
                             <h3 className="contact__card-title">Whatsapp</h3>
-                            <span className="contact__card-data">+49-152-1233-6476</span>
-                            <a href="https://api.whatsapp.com/send?phone=4915212336476&text=Hello" className="contact__button">
+                            <span className="contact__card-data">{contact.phone}</span>
+                            <a href={`https://api.whatsapp.com/send?phone=${contact.whatsapp}&text=Hello`} className="contact__button">
                                 Write me <i className="bx bx-right-arrow-alt contact__button-icon"></i>
                             </a>
                         </div>
@@ -81,8 +85,8 @@ const Contact = () => {
                         <div className="contact__card">
                             <i className='bx bxl-linkedin-square contact__card-icon'></i>
                             <h3 className="contact__card-title">LinkedIn</h3>
-                            <span className="contact__card-data">Kazishahriar</span>
-                            <a href="https://www.linkedin.com/in/kazishahriar/"
+                            <span className="contact__card-data">{contact.linkedinHandle}</span>
+                            <a href={linkedin.url}
                                className="contact__button">
                                 Write me <i className="bx bx-right-arrow-alt contact__button-icon"></i>
                             </a>
@@ -138,7 +142,7 @@ const Contact = () => {
                         <input
                             type="hidden"
                             name="to_email"
-                            value="km.shahriar28@gmail.com"
+                            value={contact.email}
                         />
 
                         <button

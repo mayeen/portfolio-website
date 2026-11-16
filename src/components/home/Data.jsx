@@ -1,9 +1,11 @@
 import React from 'react'
+import { profile } from '../../data';
+import RichText from '../../utils/RichText';
 
 const Data = () => {
     return (
        <div className="home__data">
-           <h1 className="home__title">Kazi Mostafa Shahriar
+           <h1 className="home__title">{profile.name}
                <svg
                    width="36"
                    height="36"
@@ -54,14 +56,10 @@ const Data = () => {
                    ></path>
                </svg>
            </h1>
-           <h3 className="home__subtitle">Full-stack Developer</h3>
+           <h3 className="home__subtitle">{profile.title}</h3>
            <p className="home__description">
-               <b>Full-stack engineer</b> with <b>5 years</b> at <b>multinational companies</b> and <b>2+ years</b> as
-               a <b>working student</b> in <b>Germany</b>. <b>M.Sc.</b> in <b>Web and Data Science</b>, with a focus on
-               exploring<b> data science</b> and <b>AI applications</b>. Passionate about solving algorithmic problems
-               and writing clean, scalable code in team settings. Skilled in building platform-independent solutions that balance
-               technical quality and business needs.
-               </p>
+               <RichText text={profile.summary} />
+           </p>
            <a href="#contact" className="button button--flex">Say Hello
                <svg
                    className="button__icon"

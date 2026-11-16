@@ -1,0 +1,52 @@
+[
+  {
+    "id": "languages",
+    "name": "Programming Languages",
+    "skills": [
+      { "name": "C#", "level": "Advanced" },
+      { "name": "Python", "level": "Intermediate" },
+      { "name": "JavaScript", "level": "Advanced" },
+      { "name": "Scala", "level": "Basic" },
+      { "name": "TypeScript", "level": "Intermediate" },
+      { "name": "HTML/CSS", "level": "Advanced" },
+      { "name": "Java", "level": "Intermediate" }
+    ]
+  },
+  {
+    "id": "frameworks",
+    "name": "Frameworks",
+    "skills": [
+      { "name": "ASP.NET", "level": "Advanced" },
+      { "name": ".NET Core", "level": "Advanced" },
+      { "name": "React", "level": "Intermediate" },
+      { "name": "Angular", "level": "Advanced" },
+      { "name": "NodeJs", "level": "Intermediate" },
+      { "name": "Entity Framework", "level": "Advanced" }
+    ]
+  },
+  {
+    "id": "tools",
+    "name": "Tools & Infrastructure",
+    "skills": [
+      { "name": "Git", "level": "Advanced" },
+      { "name": "GitHub", "level": "Advanced" },
+      { "name": "Jira", "level": "Advanced" },
+      { "name": "Redis", "level": "Intermediate" },
+      { "name": "Docker", "level": "Intermediate" },
+      { "name": "Jenkins", "level": "Intermediate" },
+      { "name": "AWS", "level": "Intermediate" },
+      { "name": "SQL Server", "level": "Advanced" }
+    ]
+  },
+  {
+    "id": "methodologies",
+    "name": "Methodologies & Practices",
+    "skills": [
+      { "name": "Design Patterns", "level": "Advanced" },
+      { "name": "Agile", "level": "Advanced" },
+      { "name": "Microservice", "level": "Intermediate" },
+      { "name": "RESTful API", "level": "Advanced" },
+      { "name": "SOAP", "level": "Intermediate" }
+    ]
+  }
+]

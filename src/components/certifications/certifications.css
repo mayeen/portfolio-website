@@ -1,0 +1,87 @@
+/* Same width as the Projects section (.projects__container) */
+.certifications__container {
+    max-width: 968px;
+    margin: 0 auto;
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+}
+
+.certifications__card {
+    display: grid;
+    grid-template-columns: 1.2fr 1fr;
+    align-items: center;
+    gap: 2rem;
+    background-color: var(--container-color);
+    border: 1px solid rgb(0 0 0 / 10%);
+    border-radius: 1.25rem;
+    padding: 2rem;
+    box-shadow: 0 2px 15px rgb(0 0 0 / 5%);
+}
+
+.certifications__img-link {
+    display: block;
+}
+
+.certifications__img {
+    display: block;
+    width: 100%;
+    border-radius: 0.75rem;
+    transition: transform 0.3s;
+}
+
+.certifications__img-link:hover .certifications__img {
+    transform: scale(1.02);
+}
+
+.certifications__details {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+.certifications__icon {
+    font-size: 3rem;
+    color: var(--title-color);
+    margin-bottom: var(--mb-1);
+}
+
+.certifications__name {
+    font-size: var(--h3-font-size);
+    font-weight: var(--font-medium);
+    color: var(--title-color);
+    margin-bottom: var(--mb-0-75);
+}
+
+.certifications__meta,
+.certifications__credential {
+    font-size: var(--normal-font-size);
+    color: var(--text-color);
+}
+
+.certifications__credential {
+    margin-top: var(--mb-0-5);
+}
+
+.certifications__link {
+    display: inline-flex;
+    align-items: center;
+    column-gap: 0.25rem;
+    margin-top: var(--mb-1-5);
+    font-size: var(--normal-font-size);
+    font-weight: var(--font-medium);
+    color: var(--title-color);
+    transition: 0.3s;
+}
+
+.certifications__link:hover {
+    color: var(--title-color-dark);
+}
+
+/* =============== BREAKPOINTS =============== */
+@media screen and (width <= 768px) {
+    .certifications__card {
+        grid-template-columns: 1fr;
+        padding: 1.5rem;
+        gap: 1.25rem;
+    }
+}

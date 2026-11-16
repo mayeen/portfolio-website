@@ -2,9 +2,6 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 const ProjectsCard = ({ project }) => {
-    // Add console log to debug the GitHub URL
-    console.log('Project GitHub URL:', project.github);
-
     return (
         <div className="projects__card">
             <div className="projects__img-container">
@@ -53,7 +50,7 @@ const ProjectsCard = ({ project }) => {
 // Add PropTypes validation
 ProjectsCard.propTypes = {
     project: PropTypes.shape({
-        id: PropTypes.number.isRequired,
+        id: PropTypes.string.isRequired,
         image: PropTypes.string.isRequired,
         title: PropTypes.string.isRequired,
         description: PropTypes.string.isRequired,
@@ -62,7 +59,5 @@ ProjectsCard.propTypes = {
         demo: PropTypes.string
     }).isRequired
 };
-
-// Define PropTypes as before
 
 export default ProjectsCard;

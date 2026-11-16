@@ -1,0 +1,38 @@
+[
+  {
+    "id": "msc-koblenz",
+    "degree": "M.Sc. in Web and Data Science",
+    "institution": "Universität Koblenz",
+    "location": "Germany",
+    "startDate": "2022-04",
+    "endDate": "2026-07-22",
+    "coursework": ["Web Science", "Engineering Web & Data Intensive System", "Data Science", "Big Data Analysis"]
+  },
+  {
+    "id": "bsc-aust",
+    "degree": "B.Sc. in Computer Science and Engineering",
+    "institution": "Ahsanullah University of Science & Technology",
+    "location": "Bangladesh",
+    "startDate": "2013-07",
+    "endDate": "2017-06",
+    "coursework": ["Algorithm", "Data Structure", "Object Oriented Programming", "Software Engineering"]
+  },
+  {
+    "id": "hsc",
+    "degree": "Higher Secondary Certificate",
+    "institution": "Rajuk Uttara Model College",
+    "location": "Bangladesh",
+    "startDate": null,
+    "endDate": "2012",
+    "coursework": []
+  },
+  {
+    "id": "ssc",
+    "degree": "Secondary School Certificate",
+    "institution": "Rajuk Uttara Model College",
+    "location": "Bangladesh",
+    "startDate": null,
+    "endDate": "2010",
+    "coursework": []
+  }
+]
