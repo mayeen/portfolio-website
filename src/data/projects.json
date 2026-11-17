@@ -32,13 +32,15 @@
   {
     "id": "portfolio-website",
     "image": "/images/projects/portfolio.jpg",
-    "title": "Portfolio Website",
-    "description": "Designed and developed a fully responsive single-page portfolio website in React.js to showcase skills, projects and achievements. Built reusable components with dynamic rendering for maintainability and scalability, achieving 100% Lighthouse scores in performance and accessibility.",
+    "title": "Portfolio Website with CV Chatbot",
+    "description": "Built a React site on Netlify with an Azure Functions API and Cosmos DB, synced from one Markdown CV via GitHub Actions. Built a CV-grounded Azure OpenAI chatbot with job dates computed in code, guarded by Turnstile, rate limits and Prompt Shields. Automated CV ingestion with Azure Document Intelligence and OpenAI.",
     "technologies": [
       "React.js",
-      "HTML5",
-      "CSS3",
-      "JavaScript",
+      "Azure Functions",
+      "Azure OpenAI",
+      "Azure Document Intelligence",
+      "Cosmos DB",
+      "GitHub Actions",
       "Netlify"
     ],
     "github": "https://github.com/mayeen/portfolio-website",

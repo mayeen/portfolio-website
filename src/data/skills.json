@@ -116,6 +116,9 @@
       },
       {
         "name": "Chroma"
+      },
+      {
+        "name": "Cosmos DB"
       }
     ]
   },

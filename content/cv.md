@@ -207,16 +207,17 @@ AI/ML engineer based in Chemnitz, Germany, with 7+ years of production software 
 #### details
 - Assists users with product discovery, order tracking, and personalized recommendations, and can execute actions like adding items to cart or processing returns through natural language.
 
-### Portfolio Website
+### Portfolio Website with CV Chatbot
 - id: portfolio-website
 - image: /images/projects/portfolio.jpg
-- technologies: React.js, HTML5, CSS3, JavaScript, Netlify
+- technologies: React.js, Azure Functions, Azure OpenAI, Azure Document Intelligence, Cosmos DB, GitHub Actions, Netlify
 - github: https://github.com/mayeen/portfolio-website
 - demo: https://kazishahriar.dev/
 
 #### software
-- Designed and developed a fully responsive single-page portfolio website in React.js to showcase skills, projects and achievements.
-- Built reusable components with dynamic rendering for maintainability and scalability, achieving 100% Lighthouse scores in performance and accessibility.
+- Built a React site on Netlify with an Azure Functions API and Cosmos DB, synced from one Markdown CV via GitHub Actions.
+- Built a CV-grounded Azure OpenAI chatbot with job dates computed in code, guarded by Turnstile, rate limits and Prompt Shields.
+- Automated CV ingestion with Azure Document Intelligence and OpenAI.
 
 ### Biometric Authenticator App
 - id: biometric-authenticator
@@ -254,7 +255,7 @@ AI/ML engineer based in Chemnitz, Germany, with 7+ years of production software 
 
 ### Databases
 - id: databases
-- skills: SQL Server, MongoDB, Chroma
+- skills: SQL Server, MongoDB, Chroma, Cosmos DB
 
 ### Tools
 - id: tools
