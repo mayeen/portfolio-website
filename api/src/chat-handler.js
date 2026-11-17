@@ -188,8 +188,8 @@ export function cachedLoader(load, { ttlMs = 5 * 60_000, now = Date.now } = {}) 
 // so the wording never drifts. The image is served by the website from public/chat/.
 
 export const SALARY_REPLIES = {
-    en: "I want a competitive salary and of course I am open to negotiate. But when I say competitive salary, I don't mean :p",
-    de: 'Ich möchte ein wettbewerbsfähiges Gehalt und bin natürlich offen für Verhandlungen. Aber wenn ich wettbewerbsfähiges Gehalt sage, meine ich nicht :p',
+    en: "Shahriar wants a competitive salary and of course he is open to negotiate. But when he says competitive salary, he doesn't mean...",
+    de: 'Shahriar möchte ein wettbewerbsfähiges Gehalt und ist natürlich offen für Verhandlungen. Aber wenn er von einem wettbewerbsfähigen Gehalt spricht, meint er nicht ...',
 };
 export const SALARY_MEDIA = {
     src: '/chat/competitive-salary.png',
