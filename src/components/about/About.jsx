@@ -2,9 +2,10 @@ import React from 'react'
 import './about.css';
 import AboutImg from "../../assets/profile2.jpg"
 import Info from "./Info";
-import { profile } from '../../data';
+import { useContent } from '../../content/ContentProvider';
 
 const About = () => {
+    const { profile } = useContent();
     return (
         <section className="about section" id="about">
             <h2 className="section__title">About Me</h2>

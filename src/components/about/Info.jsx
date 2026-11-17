@@ -1,7 +1,8 @@
 import React from 'react'
-import { profile } from '../../data';
+import { useContent } from '../../content/ContentProvider';
 
 const Info = () => {
+    const { profile } = useContent();
     return (
         <div className="about__info grid">
             {profile.stats.map((stat) => (

@@ -1,6 +1,6 @@
 import React from 'react'
 import "./footer.css"
-import { profile } from '../../data';
+import { useContent } from '../../content/ContentProvider';
 
 const LINKS = [
     { href: '#about', label: 'About' },
@@ -9,6 +9,7 @@ const LINKS = [
 ];
 
 export const Footer = () => {
+    const { profile } = useContent();
     return (
         <footer className="footer">
             <div className="footer__container container">

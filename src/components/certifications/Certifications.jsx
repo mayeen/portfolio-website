@@ -1,9 +1,10 @@
 import React from 'react'
 import './certifications.css';
-import { certifications } from '../../data';
+import { useContent } from '../../content/ContentProvider';
 import { formatDate } from '../../utils/date';
 
 const Certifications = () => {
+    const { certifications } = useContent();
     return (
         <section className="certifications section" id="certifications">
             <h2 className="section__title">Certifications</h2>

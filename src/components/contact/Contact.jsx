@@ -1,12 +1,13 @@
 import React, { useRef, useState } from 'react';
 import './contact.css';
 import emailjs from '@emailjs/browser';
-import { profile } from '../../data';
+import { useContent } from '../../content/ContentProvider';
 
-const { contact } = profile;
-const linkedin = profile.socials.find((s) => s.platform === 'LinkedIn');
 
 const Contact = () => {
+    const { profile } = useContent();
+    const { contact } = profile;
+    const linkedin = profile.socials.find((s) => s.platform === 'LinkedIn');
     const form = useRef();
     const [formData, setFormData] = useState({
         name: '',

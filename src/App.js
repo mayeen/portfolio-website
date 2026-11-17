@@ -11,10 +11,11 @@ import ScrollUp from "./components/scrollup/scrollUp";
 import Projects from "./components/projects/Projects";
 import Certifications from "./components/certifications/Certifications";
 import Languages from "./components/languages/Languages";
+import { ContentProvider } from "./content/ContentProvider";
 
 function App() {
   return (
-   <>
+   <ContentProvider>
      <Header />
        <main className="main">
            <Home />
@@ -28,7 +29,7 @@ function App() {
        </main>
        <Footer />
        <ScrollUp />
-   </>
+   </ContentProvider>
   );
 }
 

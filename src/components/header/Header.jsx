@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import './header.css';
-import { profile } from '../../data';
+import { useContent } from '../../content/ContentProvider';
 
 const NAV_ITEMS = [
     { href: '#home', label: 'Home', icon: 'uil uil-estate' },
@@ -13,6 +13,7 @@ const NAV_ITEMS = [
 ];
 
 const Header = () => {
+    const { profile } = useContent();
     const [isMenuOpen, setIsMenuOpen] = useState(false);
     const [activeNav, setActiveNav] = useState('#home');
     const [isScrolled, setIsScrolled] = useState(false);

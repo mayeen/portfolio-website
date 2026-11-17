@@ -1,8 +1,9 @@
 import React from 'react'
-import { profile } from '../../data';
+import { useContent } from '../../content/ContentProvider';
 import RichText from '../../utils/RichText';
 
 const Data = () => {
+    const { profile } = useContent();
     return (
        <div className="home__data">
            <h1 className="home__title">{profile.name}

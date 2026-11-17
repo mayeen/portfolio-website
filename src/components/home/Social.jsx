@@ -1,7 +1,8 @@
 import React from 'react'
-import { profile } from '../../data';
+import { useContent } from '../../content/ContentProvider';
 
 const Social = () => {
+    const { profile } = useContent();
     return (
         <div className="home__social">
             {profile.socials.map((social) => (

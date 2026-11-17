@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
 import './projects.css';
-import { projects as projectsData } from '../../data';
+import { useContent } from '../../content/ContentProvider';
 import ProjectsCard from './ProjectsCard';
 
 const Projects = () => {
+    const { projects: projectsData } = useContent();
     const [currentProject, setCurrentProject] = useState(0);
 
     const nextProject = () => {

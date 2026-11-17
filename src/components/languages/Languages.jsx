@@ -1,7 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types';
 import './languages.css';
-import { profile } from '../../data';
+import { useContent } from '../../content/ContentProvider';
 
 export const CEFR_LEVELS = ['A1', 'A2', 'B1', 'B2', 'C1', 'C2'];
 
@@ -29,6 +29,7 @@ LevelBar.propTypes = {
 };
 
 const Languages = () => {
+    const { profile } = useContent();
     if (!profile.languages.length) return null;
 
     return (

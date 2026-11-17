@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import PropTypes from 'prop-types';
 import './qualification.css';
-import { experience, education } from '../../data';
+import { useContent } from '../../content/ContentProvider';
 import RichText from '../../utils/RichText';
 import { formatDateRange } from '../../utils/date';
 
@@ -131,6 +131,7 @@ EducationItem.propTypes = {
 };
 
 const Qualification = () => {
+    const { experience, education } = useContent();
     const [activeTab, setActiveTab] = useState('experience');
 
     const sections = {
