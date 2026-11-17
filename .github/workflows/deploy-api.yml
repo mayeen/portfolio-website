@@ -57,3 +57,10 @@ jobs:
             echo "attempt $i: HTTP $code"; sleep 10
           done
           echo "API did not return content"; exit 1
+
+      # Invalid body -> 400 from validation: proves /api/chat is deployed without calling the model (no cost).
+      - name: Smoke test chat
+        run: |
+          code=$(curl -s -o /tmp/chat.json -w '%{http_code}' -X POST -H 'Content-Type: application/json' -d '{}' "${API_URL%/content}/chat" || true)
+          cat /tmp/chat.json; echo
+          if [ "$code" = "400" ]; then echo "Chat OK"; else echo "Chat returned HTTP $code"; exit 1; fi
