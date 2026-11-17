@@ -2,6 +2,10 @@ import React from 'react';
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import ChatWidget, { askChat, safeMedia, SUGGESTIONS, MAX_CHARS, MAX_HISTORY } from './ChatWidget';
 
+// Netlify builds with REACT_APP_TURNSTILE_SITE_KEY set; these tests must not load the real Cloudflare script.
+// Tests that need Turnstile pass siteKey and a fake verifier explicitly.
+delete process.env.REACT_APP_TURNSTILE_SITE_KEY;
+
 const reply = (status, body) => Promise.resolve({ ok: status >= 200 && status < 300, status, json: () => Promise.resolve(body) });
 const answer = (text) => () => reply(200, { answer: text });
 const sentMessages = (fetchImpl, call = 0) => JSON.parse(fetchImpl.mock.calls[call][1].body).messages;
