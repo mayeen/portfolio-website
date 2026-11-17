@@ -5,6 +5,7 @@
 //   npm run ingest -- ai <ai.pdf> software <software.pdf>      several CVs, merged in order
 //   npm run ingest -- ... --dry-run                             report only, cv.md untouched
 //   npm run ingest -- ... --cached                              reuse content/ingest/* (no Azure calls, no cost)
+//   npm run ingest -- --files <pdf> [<pdf> ...]                 role from the file name (used by the GitHub Action)
 //
 // Needs AZURE_AI_ENDPOINT, AZURE_AI_KEY, AZURE_OPENAI_DEPLOYMENT (in .env, see .env.example).
 // Only this role's wording is updated; fact differences are reported, never applied. Review with `git diff`.
@@ -19,21 +20,54 @@ import { mergeExtraction, formatReport } from './ingest/merge.mjs';
 const ROLES = ['ai', 'software', 'frontend'];
 const CACHE_DIR = join(ROOT, 'content', 'ingest'); // gitignored: intermediate results for inspection
 
+// File name part -> role. Only English CVs are ingested: the German ones are translations of them,
+// so every translated title would show up as a "conflict".
+const FILE_ROLES = [[/AI_Engineer/i, 'ai'], [/Software_Engineer/i, 'software'], [/Frontend/i, 'frontend']];
+
+/** "Kazi_..._CV_AI_Engineer_EN.pdf" -> { role: 'ai' } or { skip: reason } */
+export function roleFromFilename(file) {
+    const name = basename(file);
+    if (!/\.pdf$/i.test(name)) return { skip: 'not a PDF' };
+    if (!/_EN\.pdf$/i.test(name)) return { skip: 'not an English CV (_EN.pdf)' };
+    const match = FILE_ROLES.find(([pattern]) => pattern.test(name));
+    return match ? { role: match[1] } : { skip: `no role in the file name (expected ${FILE_ROLES.map(([p]) => p.source).join(', ')})` };
+}
+
 export function parseArgs(argv) {
     const flags = new Set(argv.filter((a) => a.startsWith('--')));
     const positional = argv.filter((a) => !a.startsWith('--'));
-    if (!positional.length || positional.length % 2) throw new Error('Usage: npm run ingest -- <role> <pdf> [<role> <pdf> ...] [--dry-run] [--cached]');
+    const options = { dryRun: flags.has('--dry-run'), cached: flags.has('--cached') };
+
+    if (flags.has('--files')) {
+        const jobs = [];
+        const skipped = [];
+        for (const file of positional) {
+            const { role, skip } = roleFromFilename(file);
+            if (role) jobs.push({ role, file });
+            else skipped.push({ file, reason: skip });
+        }
+        // ai first: the software merge compares against the ai wording.
+        jobs.sort((a, b) => ROLES.indexOf(a.role) - ROLES.indexOf(b.role));
+        return { jobs, skipped, ...options };
+    }
+
+    if (!positional.length || positional.length % 2) throw new Error('Usage: npm run ingest -- <role> <pdf> [<role> <pdf> ...] [--dry-run] [--cached]  |  --files <pdf> ...');
     const jobs = [];
     for (let i = 0; i < positional.length; i += 2) {
         const [role, file] = [positional[i], positional[i + 1]];
         if (!ROLES.includes(role)) throw new Error(`Unknown role "${role}" (allowed: ${ROLES.join(', ')})`);
         jobs.push({ role, file });
     }
-    return { jobs, dryRun: flags.has('--dry-run'), cached: flags.has('--cached') };
+    return { jobs, skipped: [], ...options };
 }
 
 async function main() {
-    const { jobs, dryRun, cached } = parseArgs(process.argv.slice(2));
+    const { jobs, skipped, dryRun, cached } = parseArgs(process.argv.slice(2));
+    for (const { file, reason } of skipped) console.log(`Skipped ${file}: ${reason}`);
+    if (!jobs.length) {
+        console.log('Nothing to ingest.');
+        return;
+    }
     const { AZURE_AI_ENDPOINT: endpoint, AZURE_AI_KEY: key, AZURE_OPENAI_DEPLOYMENT: deployment } = process.env;
     if (!cached && (!endpoint || !key || !deployment)) {
         throw new Error('Missing AZURE_AI_ENDPOINT, AZURE_AI_KEY or AZURE_OPENAI_DEPLOYMENT. See .env.example.');

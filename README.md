@@ -72,6 +72,7 @@ Locally, `/api/content` does not exist, so the site simply uses the bundled data
 | `npm run ingest -- ai <pdf> software <pdf>` | Read the CV PDFs with Document Intelligence, extract them with Azure OpenAI, merge each role's wording into `content/cv.md`, print a report. Review with `git diff content/cv.md`, then run `npm run content` |
 | `npm run ingest -- ... --dry-run` | Report only, `cv.md` unchanged |
 | `npm run ingest -- ... --cached` | Reuse the last extraction from `content/ingest/` (no Azure calls, no cost) |
+| `npm run ingest -- --files <pdf> ...` | Role taken from the file name (`*_AI_Engineer_EN.pdf` -> `ai`, `*_Software_Engineer_EN.pdf` -> `software`); German CVs are skipped. Used by the GitHub Action |
 
 Example:
 
@@ -80,7 +81,7 @@ npm run ingest -- ai public/cv/Kazi_Mostafa_Shahriar_CV_AI_Engineer_EN.pdf \
                   software public/cv/Kazi_Mostafa_Shahriar_CV_Software_Engineer_EN.pdf --dry-run
 ```
 
-Roles: `ai`, `software`, `frontend`. Intermediate files (layout markdown, extracted JSON, report) are written to `content/ingest/` (gitignored).
+Roles: `ai`, `software`, `frontend`. Usually you do not run this yourself: replace a PDF in `public/cv/`, push, and the **Ingest CV PDFs** GitHub Action opens a pull request with the merged wording and the report (fact conflicts included). Merge it and the site and Cosmos DB update. Intermediate files (layout markdown, extracted JSON, report) are written to `content/ingest/` (gitignored).
 
 ### Tests
 
@@ -104,7 +105,7 @@ Copy `.env.example` to `.env` (gitignored). Never commit real keys.
 | `AZURE_AI_ENDPOINT`, `AZURE_AI_KEY` | `npm run ingest` | Azure portal > Foundry resource > Keys and Endpoint |
 | `AZURE_OPENAI_DEPLOYMENT` | `npm run ingest` | Foundry portal > Models (deployment name, e.g. `gpt-4.1-mini`) |
 
-In the cloud, the same values live in GitHub repository secrets (`COSMOS_ENDPOINT`, `COSMOS_KEY`, `AZURE_FUNCTIONAPP_PUBLISH_PROFILE`) and in the Function App's settings (with the **read-only** Cosmos key).
+In the cloud, the same values live in GitHub repository secrets (`COSMOS_ENDPOINT`, `COSMOS_KEY`, `AZURE_FUNCTIONAPP_PUBLISH_PROFILE`, `AZURE_AI_ENDPOINT`, `AZURE_AI_KEY`, `AZURE_OPENAI_DEPLOYMENT`) and in the Function App's settings (with the **read-only** Cosmos key).
 
 ## Deployment
 
@@ -113,6 +114,7 @@ Everything deploys on push to `main`:
 | What | How | Triggered by |
 |---|---|---|
 | Website | Netlify runs `npm run test:all && npm run build` (`netlify.toml`) | any push |
+| CV ingestion PR | `.github/workflows/ingest-cv.yml`: tests, ingest the changed English PDFs, open a PR with `cv.md` + report | changes to `public/cv/*.pdf` |
 | Content database | `.github/workflows/sync-content.yml`: tests, then `npm run sync` | changes to `content/cv.md` or the sync code |
 | API | `.github/workflows/deploy-api.yml`: tests, deploy to the Function App, live smoke test | changes to `api/` |
 
@@ -137,7 +139,7 @@ api/                     Azure Functions app (GET /api/content)
 docs/
   ROADMAP.md             Plan, decisions, costs and phase status
   CV_FORMAT.md           cv.md format reference
-.github/workflows/       Content sync and API deployment
+.github/workflows/       CV ingestion PR, content sync, API deployment
 ```
 
 ## Roadmap

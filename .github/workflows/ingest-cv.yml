@@ -1,0 +1,99 @@
+# When a CV PDF in public/cv/ changes on main, read it with Azure AI (Document Intelligence + Azure OpenAI),
+# merge the wording into content/cv.md and open a pull request for review. Nothing goes live until it is merged;
+# fact conflicts are listed in the PR, never applied.
+# Needs repository secrets AZURE_AI_ENDPOINT, AZURE_AI_KEY, AZURE_OPENAI_DEPLOYMENT, and
+# Settings > Actions > General > "Allow GitHub Actions to create and approve pull requests".
+name: Ingest CV PDFs
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - public/cv/*.pdf
+  workflow_dispatch: # manual run from the Actions tab: ingests every English CV
+
+permissions:
+  contents: write
+  pull-requests: write
+
+concurrency:
+  group: ingest-cv
+  cancel-in-progress: false
+
+jobs:
+  ingest:
+    runs-on: ubuntu-latest
+    env:
+      PUPPETEER_SKIP_DOWNLOAD: "true"
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0 # needed to diff against the previous push
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - run: npm ci
+
+      - run: npm run test:content
+
+      - name: Find changed CV PDFs
+        id: changed
+        env:
+          EVENT: ${{ github.event_name }}
+          BEFORE: ${{ github.event.before }}
+        run: |
+          if [ "$EVENT" = "workflow_dispatch" ] || ! git cat-file -e "$BEFORE^{commit}" 2>/dev/null; then
+            files=$(ls public/cv/*.pdf)
+          else
+            files=$(git diff --name-only --diff-filter=AM "$BEFORE" HEAD -- 'public/cv/*.pdf')
+          fi
+          echo "Changed: $files"
+          echo "files=$(echo $files)" >> "$GITHUB_OUTPUT"
+
+      # Role comes from the file name (*_AI_Engineer_EN.pdf -> ai); German CVs are skipped.
+      - name: Ingest
+        env:
+          AZURE_AI_ENDPOINT: ${{ secrets.AZURE_AI_ENDPOINT }}
+          AZURE_AI_KEY: ${{ secrets.AZURE_AI_KEY }}
+          AZURE_OPENAI_DEPLOYMENT: ${{ secrets.AZURE_OPENAI_DEPLOYMENT }}
+          FILES: ${{ steps.changed.outputs.files }}
+        run: npm run ingest -- --files $FILES
+
+      - run: npm run content
+
+      - name: Report
+        id: report
+        run: |
+          if [ ! -f content/ingest/report.md ]; then
+            echo "No English CV changed, nothing ingested." >> "$GITHUB_STEP_SUMMARY"
+            exit 0
+          fi
+          cat content/ingest/report.md >> "$GITHUB_STEP_SUMMARY"
+          if grep -q "Fact conflicts" content/ingest/report.md; then
+            echo "::warning::Fact conflicts between the PDF and cv.md. See the summary; cv.md was not changed for these."
+          fi
+          {
+            echo "Automatic CV ingestion after a PDF change in \`public/cv/\` (commit ${GITHUB_SHA::7})."
+            echo
+            echo "Only wording was merged. Review the diff, then merge: the site and Cosmos DB update automatically."
+            echo
+            cat content/ingest/report.md
+          } > content/ingest/pr-body.md
+          echo "ready=true" >> "$GITHUB_OUTPUT"
+
+      # Opens (or updates) the PR only if cv.md / src/data changed; otherwise does nothing.
+      - name: Open pull request
+        if: steps.report.outputs.ready == 'true'
+        uses: peter-evans/create-pull-request@v7
+        with:
+          branch: cv-ingest
+          delete-branch: true
+          title: "CV ingestion: wording from updated PDFs"
+          commit-message: "Merge wording from updated CV PDFs into cv.md"
+          body-path: content/ingest/pr-body.md
+          add-paths: |
+            content/cv.md
+            src/data/*.json

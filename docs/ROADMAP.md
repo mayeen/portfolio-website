@@ -36,14 +36,14 @@ Last updated: 2026-11-16.
 ## Architecture
 
 ```
-CV ingestion (run when a new CV is uploaded)
+CV ingestion (GitHub Action ingest-cv.yml, on push of a PDF in public/cv/)
   cv.pdf
     -> Azure AI Document Intelligence (prebuilt-layout, markdown output)
     -> Azure OpenAI (structured output)
     -> content/cv.md
     -> GitHub pull request (manual review of the diff)
     -> merge
-    -> GitHub Action: parse cv.md -> upsert Cosmos DB, upload files to Blob Storage
+    -> GitHub Action: parse cv.md -> upsert Cosmos DB
     -> Netlify deploys the site
 
 Runtime
@@ -76,7 +76,7 @@ Inline emphasis uses `**bold**` markdown in strings.
 | 1 | Refactor frontend to render from JSON data; add Certifications section | Same site, data in `src/data/` | Done |
 | 2 | Define master `content/cv.md` format (shared facts + per-role wording) + parser that outputs the `ai` version as site JSON | Single source of truth | Done |
 | 3 | Connect `kazishahriar.dev` to Netlify (+ redirect from netlify.app); Azure Function App `/api/content` + Cosmos DB in Sweden Central; sync on push; `useContent()` with bundled-JSON fallback | Site reads from DB | Done |
-| 4 | Ingestion script: one or more role CV PDFs -> Document Intelligence -> Azure OpenAI -> merge into `cv.md` (flag fact conflicts between CVs) -> PR | Upload CVs, review, merge | Todo |
+| 4 | Ingestion script: one or more role CV PDFs -> Document Intelligence -> Azure OpenAI -> merge into `cv.md` (flag fact conflicts between CVs) -> PR. GitHub Action `ingest-cv.yml` runs it when a PDF in `public/cv/` changes and opens the PR | Upload CVs, review, merge | Built; first live Action run pending |
 | 5 | Chatbot `/api/chat`: streaming, grounded on cv.md, guardrails | Q&A about experience | Todo |
 | 6 | Job match `/api/match` + UI (score, matched/missing skills) | Match score | Todo |
 | 7 | Extras: German/English toggle, recruiter-question analytics, GitHub project auto-sync | — | Todo |
