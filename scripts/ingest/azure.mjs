@@ -82,7 +82,7 @@ Rules:
 export function cleanOcrText(text) {
     return text
         .replace(/℃/g, '°C')
-        .replace(/\bAl\b/g, 'AI')
+        .replace(/\b(Open)?Al\b/g, '$1AI') // OCR reads a capital I as a lowercase l: "Al", "OpenAl"
         .replace(/\bAPIS\b/g, 'APIs')
         .replace(/(^|[\s(])\.\s+NET\b/g, '$1.NET');
 }

@@ -23,7 +23,7 @@ kazishahriar.dev (Netlify)  ── /api/content, /api/chat ──► Azure Funct
 
 - The page renders instantly from the bundled data, then swaps in fresh content from `/api/content` if it is newer. If the API is slow or down, visitors notice nothing.
 - `content/cv.md` stores every fact once, with role-specific wording per job (`ai`, `software`, `details`). The website shows the AI Engineer wording; the chatbot reads all of it and picks the wording that fits the question.
-- The chatbot (`POST /api/chat`) sends the whole cv.md (about 4k tokens) to gpt-4.1-mini with every question; no vector search needed. Job status and durations are computed in code so the model never does date arithmetic. Guardrails: Cloudflare Turnstile (invisible bot check on the first question, then a signed 10-minute session), input and history limits, `max_tokens`, per-IP and daily rate limits, and the Azure content filter with Prompt Shields.
+- The chatbot (`POST /api/chat`) sends the whole cv.md (about 4k tokens) to gpt-4.1-mini with every question; no vector search needed. Questions about a skill or field (e.g. "AI experience") are answered from the relevant jobs first, then the relevant projects and the M.Sc. thesis; projects never count towards years of experience. Job status and durations are computed in code so the model never does date arithmetic. Guardrails: Cloudflare Turnstile (invisible bot check on the first question, then a signed 10-minute session), input and history limits, `max_tokens`, per-IP and daily rate limits, and the Azure content filter with Prompt Shields.
 - Every question is logged anonymously to Application Insights (no IP, emails and phone numbers masked) to see what recruiters ask. See [Recruiter questions](#recruiter-questions).
 - CV ingestion only updates wording. Fact differences between a PDF and `cv.md` (dates, titles, contact details) are reported, never applied automatically.
 
@@ -169,8 +169,8 @@ docs/
 | 2. `content/cv.md` as single source of truth | Done |
 | 3. Custom domain, Cosmos DB, Azure Function API, live content | Done |
 | 4. CV ingestion with Azure AI Document Intelligence + Azure OpenAI | Done |
-| 5. Chatbot about my experience, grounded on my CV | Live (hardening next: Turnstile, streaming) |
+| 5. Chatbot about my experience, grounded on my CV | Live, with Turnstile and anonymous question analytics (next: streaming answers) |
 | 6. Job-post match score | Planned |
-| 7. German/English, recruiter-question analytics, GitHub project sync | Planned |
+| 7. German/English, GitHub project sync | Planned (recruiter-question analytics already live) |
 
 Details, decisions and costs: [docs/ROADMAP.md](docs/ROADMAP.md).
