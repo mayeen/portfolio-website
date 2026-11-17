@@ -61,6 +61,9 @@ jobs:
       # Invalid body -> 400 from validation: proves /api/chat is deployed without calling the model (no cost).
       - name: Smoke test chat
         run: |
-          code=$(curl -s -o /tmp/chat.json -w '%{http_code}' -X POST -H 'Content-Type: application/json' -d '{}' "${API_URL%/content}/chat" || true)
-          cat /tmp/chat.json; echo
-          if [ "$code" = "400" ]; then echo "Chat OK"; else echo "Chat returned HTTP $code"; exit 1; fi
+          for i in 1 2 3 4 5 6; do
+            code=$(curl -s -o /tmp/chat.json -w '%{http_code}' -X POST -H 'Content-Type: application/json' -d '{}' "${API_URL%/content}/chat" || true)
+            if [ "$code" = "400" ]; then echo "Chat OK"; exit 0; fi
+            echo "attempt $i: HTTP $code $(head -c 200 /tmp/chat.json)"; sleep 10
+          done
+          echo "Chat did not answer with 400"; exit 1
