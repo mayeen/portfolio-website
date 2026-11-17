@@ -422,7 +422,7 @@ describe('salary answer', () => {
     });
 
     test('the English text is the one Kazi wrote', () => {
-        assert.equal(SALARY_REPLIES.en, "I want a competitive salary and of course I am open to negotiate. But when I say competitive salary, I don't mean :p");
+        assert.equal(SALARY_REPLIES.en, "Shahriar wants a competitive salary and of course he is open to negotiate. But when he says competitive salary, he doesn't mean...");
     });
 
     test('normal answers are untouched and carry no media', () => {
