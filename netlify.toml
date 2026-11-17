@@ -11,6 +11,8 @@
   NODE_VERSION = "22"
   # Puppeteer is only used for local screenshots; skip its ~150 MB Chrome download on Netlify.
   PUPPETEER_SKIP_DOWNLOAD = "true"
+  # Cloudflare Turnstile site key for the chat (public by design; the secret key is only on the Function App).
+  REACT_APP_TURNSTILE_SITE_KEY = "0x4AAAAAAGEgVqtdj8pbbARA"
 
 # Security headers for every page.
 [[headers]]
