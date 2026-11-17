@@ -27,6 +27,13 @@
   [headers.values]
     Cache-Control = "public, max-age=31536000, immutable"
 
+# API: same origin for the browser (no CORS); Netlify forwards to the Azure Function App in Sweden Central.
+[[redirects]]
+  from = "/api/*"
+  to = "https://func-kazishahriar-ffezeph0c2cte9cy.swedencentral-01.azurewebsites.net/api/:splat"
+  status = 200
+  force = true
+
 # Old address (printed on earlier CVs) -> custom domain, keeping the path.
 # Deploy previews (deploy-preview-N--kazishahriar.netlify.app) are not affected.
 [[redirects]]
