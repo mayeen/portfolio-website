@@ -76,8 +76,8 @@ Inline emphasis uses `**bold**` markdown in strings.
 | 1 | Refactor frontend to render from JSON data; add Certifications section | Same site, data in `src/data/` | Done |
 | 2 | Define master `content/cv.md` format (shared facts + per-role wording) + parser that outputs the `ai` version as site JSON | Single source of truth | Done |
 | 3 | Connect `kazishahriar.dev` to Netlify (+ redirect from netlify.app); Azure Function App `/api/content` + Cosmos DB in Sweden Central; sync on push; `useContent()` with bundled-JSON fallback | Site reads from DB | Done |
-| 4 | Ingestion script: one or more role CV PDFs -> Document Intelligence -> Azure OpenAI -> merge into `cv.md` (flag fact conflicts between CVs) -> PR. GitHub Action `ingest-cv.yml` runs it when a PDF in `public/cv/` changes and opens the PR | Upload CVs, review, merge | Built; first live Action run pending |
-| 5 | Chatbot `/api/chat`: streaming, grounded on cv.md, guardrails | Q&A about experience | Todo |
+| 4 | Ingestion script: one or more role CV PDFs -> Document Intelligence -> Azure OpenAI -> merge into `cv.md` (flag fact conflicts between CVs) -> PR. GitHub Action `ingest-cv.yml` runs it when a PDF in `public/cv/` changes and opens the PR | Upload CVs, review, merge | Done |
+| 5 | Chatbot `/api/chat`: streaming, grounded on cv.md, guardrails | Q&A about experience | Live: API + widget. Next: Turnstile, streaming, question analytics |
 | 6 | Job match `/api/match` + UI (score, matched/missing skills) | Match score | Todo |
 | 7 | Extras: German/English toggle, recruiter-question analytics, GitHub project auto-sync | — | Todo |
 | 8 | (Later) Apply flow: cover letter + CV email via Azure Communication Services | — | Deferred |

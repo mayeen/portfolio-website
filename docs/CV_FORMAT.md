@@ -40,7 +40,7 @@ Facts (title, organisation, dates, location, technologies) are written **once** 
 
 | Section | Kind | Required | Optional |
 |---|---|---|---|
-| `Profile` | fields | `name`, `shortName`, `email` | `location`, `phone`, `whatsapp`, `website` |
+| `Profile` | fields | `name`, `shortName`, `email` | `location`, `phone`, `whatsapp`, `website`, `availability` (used by the chatbot) |
 | `Headline` | variants | `ai` or `software` | |
 | `Summary` | variants (supports `**bold**`) | `ai` or `software` | |
 | `About` | variants | | falls back to Summary |

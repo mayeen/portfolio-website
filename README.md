@@ -3,7 +3,7 @@
 Personal portfolio of **Kazi Mostafa Shahriar**, AI/ML Engineer.
 Live at **[kazishahriar.dev](https://kazishahriar.dev)**.
 
-The site is driven by a single Markdown CV (`content/cv.md`) and is being extended step by step with Azure AI: automatic CV ingestion (Document Intelligence + Azure OpenAI), and later a chatbot that answers questions about my experience and scores job posts against my CV.
+The site is driven by a single Markdown CV (`content/cv.md`) and is extended step by step with Azure AI: automatic CV ingestion (Document Intelligence + Azure OpenAI), a chatbot that answers questions about my experience ("Ask my AI", grounded on the CV), and later a job-post match score.
 
 ## How it works
 
@@ -17,11 +17,13 @@ content/cv.md  ── single source of truth, reviewed in git ──┐
 src/data/*.json  ── bundled into the React site      GitHub Action: sync -> Azure Cosmos DB
    │                                                         │
    ▼                                                         ▼
-kazishahriar.dev (Netlify)  ── fetches /api/content ──► Azure Function (Sweden Central) ──► Cosmos DB
+kazishahriar.dev (Netlify)  ── /api/content, /api/chat ──► Azure Function (Sweden Central) ──► Cosmos DB
+                                                                        └─► Azure OpenAI gpt-4.1-mini (chat)
 ```
 
 - The page renders instantly from the bundled data, then swaps in fresh content from `/api/content` if it is newer. If the API is slow or down, visitors notice nothing.
-- `content/cv.md` stores every fact once, with role-specific wording per job (`ai`, `software`, `details`). The website shows the AI Engineer wording; the chatbot (planned) reads all of it.
+- `content/cv.md` stores every fact once, with role-specific wording per job (`ai`, `software`, `details`). The website shows the AI Engineer wording; the chatbot reads all of it and picks the wording that fits the question.
+- The chatbot (`POST /api/chat`) sends the whole cv.md (about 4k tokens) to gpt-4.1-mini with every question; no vector search needed. Job status and durations are computed in code so the model never does date arithmetic. Guardrails: input and history limits, `max_tokens`, per-IP and daily rate limits, and the Azure content filter with Prompt Shields.
 - CV ingestion only updates wording. Fact differences between a PDF and `cv.md` (dates, titles, contact details) are reported, never applied automatically.
 
 ## Tech stack
@@ -45,7 +47,7 @@ cp .env.example .env   # then fill in the keys (only needed for sync and ingest)
 npm start              # http://localhost:3000
 ```
 
-Locally, `/api/content` does not exist, so the site simply uses the bundled data.
+Locally, `/api` does not exist: the site uses the bundled data, and the chat widget shows its "unavailable" message.
 
 ## Commands
 
@@ -89,8 +91,8 @@ Roles: `ai`, `software`, `frontend`. Usually you do not run this yourself: repla
 |---|---|
 | `npm run test:all` | Everything below (also runs on every Netlify deploy) |
 | `npm run test:content` | Content parser, Cosmos sync, CV ingestion (merge + Azure calls with fakes) |
-| `npm run test:api` | Azure Function `GET /api/content` |
-| `npm run test:app` | React components and the content provider |
+| `npm run test:api` | Azure Functions `GET /api/content` and `POST /api/chat` (fake Azure OpenAI) |
+| `npm run test:app` | React components (incl. the chat widget) and the content provider |
 | `npm test` | React tests in watch mode |
 
 No test needs Azure access or keys.
@@ -105,7 +107,7 @@ Copy `.env.example` to `.env` (gitignored). Never commit real keys.
 | `AZURE_AI_ENDPOINT`, `AZURE_AI_KEY` | `npm run ingest` | Azure portal > Foundry resource > Keys and Endpoint |
 | `AZURE_OPENAI_DEPLOYMENT` | `npm run ingest` | Foundry portal > Models (deployment name, e.g. `gpt-4.1-mini`) |
 
-In the cloud, the same values live in GitHub repository secrets (`COSMOS_ENDPOINT`, `COSMOS_KEY`, `AZURE_FUNCTIONAPP_PUBLISH_PROFILE`, `AZURE_AI_ENDPOINT`, `AZURE_AI_KEY`, `AZURE_OPENAI_DEPLOYMENT`) and in the Function App's settings (with the **read-only** Cosmos key).
+In the cloud, the same values live in GitHub repository secrets (`COSMOS_ENDPOINT`, `COSMOS_KEY`, `AZURE_FUNCTIONAPP_PUBLISH_PROFILE`, `AZURE_AI_ENDPOINT`, `AZURE_AI_KEY`, `AZURE_OPENAI_DEPLOYMENT`) and in the Function App's settings (`COSMOS_*` with the **read-only** key, `AZURE_AI_*` for the chatbot).
 
 ## Deployment
 
@@ -135,7 +137,7 @@ scripts/
   sync-cosmos.mjs        Cosmos DB sync
   ingest-cv.mjs          CV ingestion CLI
   ingest/                Azure AI calls and the merge logic
-api/                     Azure Functions app (GET /api/content)
+api/                     Azure Functions app (GET /api/content, POST /api/chat)
 docs/
   ROADMAP.md             Plan, decisions, costs and phase status
   CV_FORMAT.md           cv.md format reference
@@ -149,8 +151,8 @@ docs/
 | 1. Data-driven frontend, certifications section | Done |
 | 2. `content/cv.md` as single source of truth | Done |
 | 3. Custom domain, Cosmos DB, Azure Function API, live content | Done |
-| 4. CV ingestion with Azure AI Document Intelligence + Azure OpenAI | In progress |
-| 5. Chatbot about my experience, grounded on my CV | Planned |
+| 4. CV ingestion with Azure AI Document Intelligence + Azure OpenAI | Done |
+| 5. Chatbot about my experience, grounded on my CV | Live (hardening next: Turnstile, streaming) |
 | 6. Job-post match score | Planned |
 | 7. German/English, recruiter-question analytics, GitHub project sync | Planned |
 

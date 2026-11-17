@@ -25,7 +25,7 @@ const DATE_RE = /^\d{4}(-(0[1-9]|1[0-2])(-(0[1-9]|[12]\d|3[01]))?)?$/;
 
 // Allowed fields per section ("required" must be present).
 const SCHEMA = {
-    Profile: { kind: 'fields', required: ['name', 'shortName', 'email'], optional: ['location', 'phone', 'whatsapp', 'website'] },
+    Profile: { kind: 'fields', required: ['name', 'shortName', 'email'], optional: ['location', 'phone', 'whatsapp', 'website', 'availability'] },
     Headline: { kind: 'variants' },
     Summary: { kind: 'variants' },
     About: { kind: 'variants', optionalSection: true },
@@ -215,6 +215,7 @@ export function buildContent(source, { publicDir = PUBLIC_DIR } = {}) {
         shortName: field(profileSection, 'shortName'),
         title: variantText(siteVariant(get('Headline'), 'Headline')),
         location: field(profileSection, 'location'),
+        availability: field(profileSection, 'availability'),
         summary,
         about: about || summary.replace(/\*\*/g, ''),
         stats: get('Stats').items.map((s) => ({ icon: field(s, 'icon'), label: s.title, value: field(s, 'value') })),

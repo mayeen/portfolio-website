@@ -1,7 +1,7 @@
 .scrollup {
     position: fixed;
     right: 2.5rem;
-    bottom: 3rem;
+    bottom: 7rem; /* above the chat button */
     background-color: var(--title-color);
     opacity: 0.8;
     padding: 0.3rem 0.5rem;
@@ -37,7 +37,7 @@
 /* For medium devices */
 @media screen and (width <= 768px) {
     .show-scroll {
-        bottom: 4rem;
+        bottom: 8rem; /* above the chat button and the bottom navigation */
     }
 }
 

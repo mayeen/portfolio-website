@@ -11,6 +11,7 @@ import ScrollUp from "./components/scrollup/scrollUp";
 import Projects from "./components/projects/Projects";
 import Certifications from "./components/certifications/Certifications";
 import Languages from "./components/languages/Languages";
+import ChatWidget from "./components/chat/ChatWidget";
 import { ContentProvider } from "./content/ContentProvider";
 
 function App() {
@@ -29,6 +30,7 @@ function App() {
        </main>
        <Footer />
        <ScrollUp />
+       <ChatWidget />
    </ContentProvider>
   );
 }
