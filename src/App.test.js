@@ -59,3 +59,29 @@ describe('App', () => {
         expect(screen.getByRole('link', { name: /lebenslauf \(deutsch\)/i })).toHaveAttribute('href', profile.cv.de);
     });
 });
+
+// The real page is wired to useContent: data from /api/content reaches every section.
+describe('App with fresh content from /api/content', () => {
+    afterEach(() => {
+        delete window.fetch;
+    });
+
+    test('headline, About text and a new job from the API replace the bundled ones', async () => {
+        const newJob = { ...experience[0], id: 'new-job', role: 'Senior AI Engineer', company: 'New Company' };
+        const fresh = {
+            version: 'fresh',
+            profile: { ...profile, title: 'Senior AI Engineer (from Cosmos)', about: 'About text from Cosmos.' },
+            experience: [newJob, ...experience],
+            education, skills, projects, certifications,
+        };
+        window.fetch = jest.fn(() => Promise.resolve({ ok: true, json: () => Promise.resolve(fresh) }));
+
+        render(<App />);
+        expect(screen.getAllByText(profile.title).length).toBeGreaterThan(0); // bundled first
+
+        expect(await screen.findAllByText('Senior AI Engineer (from Cosmos)')).not.toHaveLength(0);
+        expect(screen.getByText('About text from Cosmos.')).toBeInTheDocument();
+        expect(screen.getByText('New Company')).toBeInTheDocument();
+        expect(window.fetch).toHaveBeenCalledTimes(1);
+    });
+});
