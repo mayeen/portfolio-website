@@ -23,13 +23,13 @@ Software Engineer
 
 ## Summary
 #### ai
-**Software Engineer** with **7+ years** of production experience, specializing in **AI/ML** at **Fraunhofer IKTS**, building **forecasting models**, **agentic tools** and **RAG-based analytics** in **Python**.
+**AI/ML Engineer** with **1.5 years of applied AI** at **Fraunhofer IKTS**, building **forecasting models**, **agentic tools** and **RAG-based analytics tools** in **Python**, backed by **5 years of full-stack development** with **.NET** and **Angular**.
 #### software
-**Software Engineer** with **5+ years** of production experience, focused on **frontend** with **Angular**. Skilled in turning complex requirements into fast, user-friendly interfaces.
+Software Engineer with 5 years of production experience in full-stack development with .NET, Angular and React, including 1.5 years building AI-powered tools at Fraunhofer IKTS.
 
 ## About
 #### ai
-AI/ML engineer based in Chemnitz, Germany, with 7+ years of production software experience: 5 years as a full-stack .NET and Angular developer in Bangladesh, followed by 4 years as a working student at Baqend and Fraunhofer IKTS in Germany. M.Sc. in Web and Data Science from the University of Koblenz and Microsoft Certified: Azure AI Fundamentals.
+AI/ML engineer based in Chemnitz, Germany, with 7+ years of production software experience: 5 years as a full-stack .NET and Angular developer in Bangladesh, followed by 4 years as a working student in Germany: integration engineering at Baqend, then applied AI/ML research at Fraunhofer IKTS until September 2026. M.Sc. in Web and Data Science from the University of Koblenz and Microsoft Certified: Azure AI Fundamentals.
 
 ## Stats
 ### Full time Experience
