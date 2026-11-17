@@ -1,70 +1,155 @@
-# Getting Started with Create React App
+# kazishahriar.dev
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+Personal portfolio of **Kazi Mostafa Shahriar**, AI/ML Engineer.
+Live at **[kazishahriar.dev](https://kazishahriar.dev)**.
 
-## Available Scripts
+The site is driven by a single Markdown CV (`content/cv.md`) and is being extended step by step with Azure AI: automatic CV ingestion (Document Intelligence + Azure OpenAI), and later a chatbot that answers questions about my experience and scores job posts against my CV.
 
-In the project directory, you can run:
+## How it works
 
-### `npm start`
+```
+CV PDFs (public/cv/)
+   │  npm run ingest  (Azure AI Document Intelligence -> Azure OpenAI -> merge)
+   ▼
+content/cv.md  ── single source of truth, reviewed in git ──┐
+   │  npm run content                                        │  push to main
+   ▼                                                         ▼
+src/data/*.json  ── bundled into the React site      GitHub Action: sync -> Azure Cosmos DB
+   │                                                         │
+   ▼                                                         ▼
+kazishahriar.dev (Netlify)  ── fetches /api/content ──► Azure Function (Sweden Central) ──► Cosmos DB
+```
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+- The page renders instantly from the bundled data, then swaps in fresh content from `/api/content` if it is newer. If the API is slow or down, visitors notice nothing.
+- `content/cv.md` stores every fact once, with role-specific wording per job (`ai`, `software`, `details`). The website shows the AI Engineer wording; the chatbot (planned) reads all of it.
+- CV ingestion only updates wording. Fact differences between a PDF and `cv.md` (dates, titles, contact details) are reported, never applied automatically.
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+## Tech stack
 
-### `npm test`
+| Area | Technology |
+|---|---|
+| Frontend | React 19 (Create React App), plain CSS |
+| Hosting | Netlify, custom domain via Cloudflare DNS |
+| API | Azure Functions (Node.js 22, Flex Consumption, Sweden Central) |
+| Database | Azure Cosmos DB for NoSQL (free tier) |
+| AI | Azure AI Foundry: Document Intelligence (prebuilt-layout), Azure OpenAI `gpt-4.1-mini` |
+| CI/CD | GitHub Actions, Netlify builds |
+| Tests | Node test runner, Jest + React Testing Library |
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+## Getting started
 
-### `npm run build`
+```bash
+npm install            # website and scripts
+cd api && npm install  # Azure Functions API (only needed to work on the API)
+cp .env.example .env   # then fill in the keys (only needed for sync and ingest)
+npm start              # http://localhost:3000
+```
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+Locally, `/api/content` does not exist, so the site simply uses the bundled data.
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+## Commands
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+### Website
 
-### `npm run eject`
+| Command | What it does |
+|---|---|
+| `npm start` | Development server at http://localhost:3000 |
+| `npm run build` | Production build into `build/`. Runs `content:check` first and fails if `content/cv.md` is invalid or `src/data` is stale |
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+### Content
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+| Command | What it does |
+|---|---|
+| `npm run content` | Validate `content/cv.md` and regenerate `src/data/*.json`. Run after every edit of `cv.md` |
+| `npm run content:check` | Validate only; fail if `src/data` is out of date (used by the build) |
+| `npm run sync` | Push the content to Azure Cosmos DB (upserts changed documents, deletes removed ones). Needs `COSMOS_*` in `.env` |
+| `npm run sync -- --dry-run` | Show what the sync would change, write nothing |
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+### CV ingestion (Azure AI)
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+| Command | What it does |
+|---|---|
+| `npm run ingest -- ai <pdf> software <pdf>` | Read the CV PDFs with Document Intelligence, extract them with Azure OpenAI, merge each role's wording into `content/cv.md`, print a report. Review with `git diff content/cv.md`, then run `npm run content` |
+| `npm run ingest -- ... --dry-run` | Report only, `cv.md` unchanged |
+| `npm run ingest -- ... --cached` | Reuse the last extraction from `content/ingest/` (no Azure calls, no cost) |
 
-## Learn More
+Example:
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+```bash
+npm run ingest -- ai public/cv/Kazi_Mostafa_Shahriar_CV_AI_Engineer_EN.pdf \
+                  software public/cv/Kazi_Mostafa_Shahriar_CV_Software_Engineer_EN.pdf --dry-run
+```
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+Roles: `ai`, `software`, `frontend`. Intermediate files (layout markdown, extracted JSON, report) are written to `content/ingest/` (gitignored).
 
-### Code Splitting
+### Tests
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+| Command | What it runs |
+|---|---|
+| `npm run test:all` | Everything below (also runs on every Netlify deploy) |
+| `npm run test:content` | Content parser, Cosmos sync, CV ingestion (merge + Azure calls with fakes) |
+| `npm run test:api` | Azure Function `GET /api/content` |
+| `npm run test:app` | React components and the content provider |
+| `npm test` | React tests in watch mode |
 
-### Analyzing the Bundle Size
+No test needs Azure access or keys.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+## Environment variables
 
-### Making a Progressive Web App
+Copy `.env.example` to `.env` (gitignored). Never commit real keys.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+| Variable | Used by | Where to find it |
+|---|---|---|
+| `COSMOS_ENDPOINT`, `COSMOS_KEY` | `npm run sync` | Azure portal > Cosmos DB account > Keys (read-write key) |
+| `AZURE_AI_ENDPOINT`, `AZURE_AI_KEY` | `npm run ingest` | Azure portal > Foundry resource > Keys and Endpoint |
+| `AZURE_OPENAI_DEPLOYMENT` | `npm run ingest` | Foundry portal > Models (deployment name, e.g. `gpt-4.1-mini`) |
 
-### Advanced Configuration
+In the cloud, the same values live in GitHub repository secrets (`COSMOS_ENDPOINT`, `COSMOS_KEY`, `AZURE_FUNCTIONAPP_PUBLISH_PROFILE`) and in the Function App's settings (with the **read-only** Cosmos key).
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+## Deployment
 
-### Deployment
+Everything deploys on push to `main`:
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+| What | How | Triggered by |
+|---|---|---|
+| Website | Netlify runs `npm run test:all && npm run build` (`netlify.toml`) | any push |
+| Content database | `.github/workflows/sync-content.yml`: tests, then `npm run sync` | changes to `content/cv.md` or the sync code |
+| API | `.github/workflows/deploy-api.yml`: tests, deploy to the Function App, live smoke test | changes to `api/` |
 
-### `npm run build` fails to minify
+`netlify.toml` also proxies `/api/*` to the Azure Function App, adds security headers, and redirects the old `kazishahriar.netlify.app` address to `kazishahriar.dev`.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+## Project structure
+
+```
+content/cv.md            Master CV (source of truth). Format: docs/CV_FORMAT.md
+public/cv/               CV PDFs offered for download (AI / Software Engineer, EN / DE)
+src/
+  components/            One folder per page section
+  content/               ContentProvider + useContent() (bundled data, then /api/content)
+  data/                  Generated from cv.md by `npm run content`; do not edit by hand
+  utils/                 Date formatting, **bold** rendering
+scripts/
+  build-content.mjs      cv.md parser and validator
+  sync-cosmos.mjs        Cosmos DB sync
+  ingest-cv.mjs          CV ingestion CLI
+  ingest/                Azure AI calls and the merge logic
+api/                     Azure Functions app (GET /api/content)
+docs/
+  ROADMAP.md             Plan, decisions, costs and phase status
+  CV_FORMAT.md           cv.md format reference
+.github/workflows/       Content sync and API deployment
+```
+
+## Roadmap
+
+| Phase | Status |
+|---|---|
+| 1. Data-driven frontend, certifications section | Done |
+| 2. `content/cv.md` as single source of truth | Done |
+| 3. Custom domain, Cosmos DB, Azure Function API, live content | Done |
+| 4. CV ingestion with Azure AI Document Intelligence + Azure OpenAI | In progress |
+| 5. Chatbot about my experience, grounded on my CV | Planned |
+| 6. Job-post match score | Planned |
+| 7. German/English, recruiter-question analytics, GitHub project sync | Planned |
+
+Details, decisions and costs: [docs/ROADMAP.md](docs/ROADMAP.md).
