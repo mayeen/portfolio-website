@@ -212,3 +212,21 @@ describe('the real content/cv.md', () => {
         assert.equal(data.certifications[0].code, 'AI-901');
     });
 });
+
+describe('Profile availability (for the chatbot)', () => {
+    test('is optional: null when missing', () => {
+        const { data, errors } = buildContent(MINIMAL);
+        assert.deepEqual(errors, []);
+        assert.equal(data.profile.availability, null);
+    });
+
+    test('is parsed when present', () => {
+        const { data, errors } = buildContent(MINIMAL.replace('- email: jane@example.com', '- email: jane@example.com\n- availability: Available immediately'));
+        assert.deepEqual(errors, []);
+        assert.equal(data.profile.availability, 'Available immediately');
+    });
+
+    test('the real cv.md states it', () => {
+        assert.match(buildContent(readFileSync(CV_PATH, 'utf8')).data.profile.availability, /Available immediately, open to relocation/);
+    });
+});
