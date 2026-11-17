@@ -12,6 +12,8 @@ node_modules/
 /build
 # misc
 .DS_Store
+# CV ingestion intermediate files (npm run ingest)
+/content/ingest/
 # secrets (Azure keys etc.); see .env.example
 .env
 .env.local
