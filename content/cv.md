@@ -90,6 +90,11 @@ AI/ML engineer based in Chemnitz, Germany, with 7+ years of production software 
 - Trained ANN time-series forecasting model for effluent temperature on an EU project, reaching **RMSE of 1.3°C** using **Python, TensorFlow, Keras and CUDA**.
 - Built an XGBoost model predicting experiment outcomes from process parameters, cutting **scrap material by 9%** using **Python and RESTful APIs**.
 
+#### software
+- Built a **React** dashboard and **Python** pipeline that turns raw battery sensor data into domain-specific charts and reports, with an **LLM** layer over **Chroma** (**LangChain**) for analysis.
+- Trained ANN time-series models for effluent temperature forecasting on an EU project, reaching RMSE of 1.3°C using Python, TensorFlow, Keras, CUDA.
+- Built an XGBoost model predicting battery experiment outcomes from process parameters, cutting scrap material by 9% using Python and RESTful APIs.
+
 #### details
 - Conducted analysis of large-scale **time-series sensor data** from wastewater and industrial processes within a European industry project.
 - Designed and trained **machine learning models** for thermal energy recovery and effluent temperature forecasting, achieving **RMSE of 1.3** and **accuracy of 91%**.
@@ -124,6 +129,11 @@ AI/ML engineer based in Chemnitz, Germany, with 7+ years of production software 
 - Integrated in-house and third-party APIs and developed asynchronous workflow automation tools using **.NET Core, SQL Server** and **Docker**.
 - Practiced Agile/Scrum with microservices architecture and CI/CD pipelines on AWS.
 
+#### software
+- Built **.NET** backend services and an **Angular** dashboard for a workflow management tool serving enterprise clients including Dell, Ford, and Colgate using **SQL Server, Docker** and **AWS**.
+- Integrated in-house and third-party APIs, developed asynchronous workflow automation tools using .NET Core, SQL Server and Docker.
+- Practiced Agile/Scrum with microservice architecture and CI/CD pipelines on AWS.
+
 #### details
 - Built scalable **C# (.NET)** backends and **RESTful APIs**, enhancing system interoperability by **40%**.
 - Implemented robust front-end using **Angular**, **Bootstrap** while working side by side with off-shore client designers.
@@ -140,6 +150,9 @@ AI/ML engineer based in Chemnitz, Germany, with 7+ years of production software 
 
 #### ai
 - Built a clinic management system supporting **15+ clinics** using **.NET MVC**, **SQL Server** and **Bootstrap**, reducing admin workload by **30%**.
+
+#### software
+- Built a clinic management software supporting 15+ clinics using .NET MVC, SQL Server and Bootstrap, reducing admin workload by 30%.
 
 #### details
 - Collaborated with clients for requirement analysis and **black-box testing** to ensure quality.
