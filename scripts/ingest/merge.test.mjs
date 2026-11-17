@@ -57,7 +57,7 @@ describe('wording updates (allowed)', () => {
     test('ai role: a project that only has software wording, with the same text -> no duplicate ai block', () => {
         const { cv, report } = merge(perfectExtraction(), 'ai');
         assert.equal(readBlock(cv, 'Projects', 2, 'ai'), null, 'Portfolio Website has no ai block');
-        assert.ok(report.unchanged.includes('Project: Portfolio Website (same as software wording)'));
+        assert.ok(report.unchanged.includes('Project: Portfolio Website with CV Chatbot (same as software wording)'));
     });
 
     test('software role: perfect software extraction -> nothing written; jobs without a software block match the ai wording', () => {

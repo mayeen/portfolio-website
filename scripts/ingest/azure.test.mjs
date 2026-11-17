@@ -100,7 +100,8 @@ describe('OCR cleanup (deterministic, after the model)', () => {
         ['using Python and RESTful APIS.', 'using Python and RESTful APIs.'],
         ['Backend: . NET, React', 'Backend: .NET, React'],
         ['(. NET Core)', '(.NET Core)'],
-        ['Albert Allen Algorithm ALL', 'Albert Allen Algorithm ALL'], // only the standalone token "Al"
+        ['Document Intelligence and OpenAl.', 'Document Intelligence and OpenAI.'],
+        ['Albert Allen Algorithm ALL Openly', 'Albert Allen Algorithm ALL Openly'], // only the standalone tokens "Al" / "OpenAl"
     ];
     for (const [input, expected] of cases) {
         test(`"${input}" -> "${expected}"`, () => assert.equal(cleanOcrText(input), expected));

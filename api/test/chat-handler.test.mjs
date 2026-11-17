@@ -207,6 +207,11 @@ describe('systemPrompt', () => {
         assert.match(prompt, /do not describe him as unemployed, not employed or not working/);
         assert.match(prompt, /- availability: /, 'availability from cv.md is in the prompt');
     });
+    test('experience answers include projects, which do not count towards years', () => {
+        assert.match(prompt, /cover BOTH the relevant jobs AND the relevant projects/);
+        assert.match(prompt, /do not count towards years of experience/);
+        assert.match(prompt, /### E-commerce chatbot using Agentic AI/, 'the projects from cv.md are in the prompt');
+    });
     test('stays small: CV plus instructions under ~6k tokens (about 24k characters)', () => {
         assert.ok(prompt.length < 24_000, `${prompt.length} characters`);
     });
