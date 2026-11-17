@@ -14,6 +14,7 @@
 - phone: +49 1521 233 6476
 - whatsapp: 4915212336476
 - website: https://kazishahriar.dev/
+- availability: Available immediately, open to relocation
 
 ## Headline
 #### ai
