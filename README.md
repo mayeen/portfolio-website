@@ -23,7 +23,8 @@ kazishahriar.dev (Netlify)  ── /api/content, /api/chat ──► Azure Funct
 
 - The page renders instantly from the bundled data, then swaps in fresh content from `/api/content` if it is newer. If the API is slow or down, visitors notice nothing.
 - `content/cv.md` stores every fact once, with role-specific wording per job (`ai`, `software`, `details`). The website shows the AI Engineer wording; the chatbot reads all of it and picks the wording that fits the question.
-- The chatbot (`POST /api/chat`) sends the whole cv.md (about 4k tokens) to gpt-4.1-mini with every question; no vector search needed. Job status and durations are computed in code so the model never does date arithmetic. Guardrails: input and history limits, `max_tokens`, per-IP and daily rate limits, and the Azure content filter with Prompt Shields.
+- The chatbot (`POST /api/chat`) sends the whole cv.md (about 4k tokens) to gpt-4.1-mini with every question; no vector search needed. Job status and durations are computed in code so the model never does date arithmetic. Guardrails: Cloudflare Turnstile (invisible bot check on the first question, then a signed 10-minute session), input and history limits, `max_tokens`, per-IP and daily rate limits, and the Azure content filter with Prompt Shields.
+- Every question is logged anonymously to Application Insights (no IP, emails and phone numbers masked) to see what recruiters ask. See [Recruiter questions](#recruiter-questions).
 - CV ingestion only updates wording. Fact differences between a PDF and `cv.md` (dates, titles, contact details) are reported, never applied automatically.
 
 ## Tech stack
@@ -107,7 +108,23 @@ Copy `.env.example` to `.env` (gitignored). Never commit real keys.
 | `AZURE_AI_ENDPOINT`, `AZURE_AI_KEY` | `npm run ingest` | Azure portal > Foundry resource > Keys and Endpoint |
 | `AZURE_OPENAI_DEPLOYMENT` | `npm run ingest` | Foundry portal > Models (deployment name, e.g. `gpt-4.1-mini`) |
 
-In the cloud, the same values live in GitHub repository secrets (`COSMOS_ENDPOINT`, `COSMOS_KEY`, `AZURE_FUNCTIONAPP_PUBLISH_PROFILE`, `AZURE_AI_ENDPOINT`, `AZURE_AI_KEY`, `AZURE_OPENAI_DEPLOYMENT`) and in the Function App's settings (`COSMOS_*` with the **read-only** key, `AZURE_AI_*` for the chatbot).
+| `REACT_APP_TURNSTILE_SITE_KEY` | Website build (public) | Cloudflare > Turnstile > widget. Set in `netlify.toml`; locally optional |
+
+In the cloud, the same values live in GitHub repository secrets (`COSMOS_ENDPOINT`, `COSMOS_KEY`, `AZURE_FUNCTIONAPP_PUBLISH_PROFILE`, `AZURE_AI_ENDPOINT`, `AZURE_AI_KEY`, `AZURE_OPENAI_DEPLOYMENT`) and in the Function App's settings (`COSMOS_*` with the **read-only** key, `AZURE_AI_*` for the chatbot, `TURNSTILE_SECRET_KEY` for bot protection; without it the check is off).
+
+## Recruiter questions
+
+Each chat question is one trace line `chat-question {json}` in Application Insights (`appi-kazishahriar` > Logs):
+
+```kusto
+traces
+| where message startswith "chat-question "
+| extend d = parse_json(substring(message, 14))
+| project timestamp, question = tostring(d.q), status = tostring(d.status), turn = toint(d.turn), tokensIn = toint(d.tokensIn), tokensOut = toint(d.tokensOut)
+| order by timestamp desc
+```
+
+`status` is `answered`, `filtered` (content filter), `error` or `rate-limited`; `turn` 1 is the first question of a conversation. Data is deleted automatically after the Application Insights retention period.
 
 ## Deployment
 

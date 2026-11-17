@@ -77,7 +77,7 @@ Inline emphasis uses `**bold**` markdown in strings.
 | 2 | Define master `content/cv.md` format (shared facts + per-role wording) + parser that outputs the `ai` version as site JSON | Single source of truth | Done |
 | 3 | Connect `kazishahriar.dev` to Netlify (+ redirect from netlify.app); Azure Function App `/api/content` + Cosmos DB in Sweden Central; sync on push; `useContent()` with bundled-JSON fallback | Site reads from DB | Done |
 | 4 | Ingestion script: one or more role CV PDFs -> Document Intelligence -> Azure OpenAI -> merge into `cv.md` (flag fact conflicts between CVs) -> PR. GitHub Action `ingest-cv.yml` runs it when a PDF in `public/cv/` changes and opens the PR | Upload CVs, review, merge | Done |
-| 5 | Chatbot `/api/chat`: streaming, grounded on cv.md, guardrails | Q&A about experience | Live: API + widget. Next: Turnstile, streaming, question analytics |
+| 5 | Chatbot `/api/chat`: streaming, grounded on cv.md, guardrails | Q&A about experience | Live: API, widget, Turnstile, anonymous question analytics (Application Insights). To do: streaming answers |
 | 6 | Job match `/api/match` + UI (score, matched/missing skills) | Match score | Todo |
 | 7 | Extras: German/English toggle, recruiter-question analytics, GitHub project auto-sync | — | Todo |
 | 8 | (Later) Apply flow: cover letter + CV email via Azure Communication Services | — | Deferred |
@@ -88,6 +88,7 @@ Inline emphasis uses `**bold**` markdown in strings.
 - Role-aware: picks the role wording (`ai`, `software`, ...) that best fits the question.
 - System prompt: answer only from `cv.md`; say so when information is not in the CV; never invent facts.
 - Keep ~10 turns of history; cap `max_tokens`.
+- To do: stream answers token by token (check first that the Netlify `/api/*` proxy passes a streamed response through).
 
 ### Job match
 Structured output from the model:
@@ -99,7 +100,7 @@ The score (0–100) is computed in code from weighted required / nice-to-have ma
 
 ### Extras (approved)
 1. **German/English toggle**: LLM answers in the visitor's language at no extra cost.
-2. **Recruiter-question analytics**: log anonymized questions and match gaps to Cosmos DB; weekly review.
+2. **Recruiter-question analytics**: questions logged anonymously to Application Insights (Phase 5, done); match gaps follow in Phase 6. Application Insights instead of Cosmos DB: the Function keeps its read-only Cosmos key, data expires automatically, KQL for review.
 3. ~~Tailored CV view~~: dropped; the website shows one (AI Engineer) version and the chatbot handles role-specific questions.
 4. **GitHub auto-sync**: daily GitHub Action refreshes project stars, languages, last update.
 

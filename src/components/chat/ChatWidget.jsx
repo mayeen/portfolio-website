@@ -2,10 +2,14 @@ import React, { useEffect, useRef, useState } from 'react';
 import PropTypes from 'prop-types';
 import { useContent } from '../../content/ContentProvider';
 import RichText from '../../utils/RichText';
+import { createVerifier } from './turnstile';
 import './chat.css';
 
 // Floating chat about Kazi's experience. Answers come from POST /api/chat (Azure OpenAI, grounded on cv.md).
-// The conversation lives only in this component's state: nothing is stored in the browser or by the site.
+// The conversation lives only in this component's state; nothing is stored in the browser. The API logs each
+// question anonymously (no IP, emails/phones masked) to see what visitors ask.
+// Bot protection: with REACT_APP_TURNSTILE_SITE_KEY set, the first question carries a Cloudflare Turnstile
+// token; the API answers with a session that covers the next questions for 10 minutes.
 
 export const MAX_CHARS = 1000; // same limit as the API
 export const MAX_HISTORY = 10; // messages sent per request (the API keeps the same number)
@@ -16,10 +20,22 @@ export const SUGGESTIONS = [
     'Spricht er Deutsch?',
 ];
 
+const TOKEN_TIMEOUT_MS = 15000;
 const errorReply = (content) => ({ role: 'assistant', content, error: true });
 
-/** Sends the conversation to the API and always resolves to a message (answer or friendly error). */
-export async function askChat(messages, { fetchImpl, timeoutMs, email }) {
+/** Only images from the site's own public/chat/ folder are shown (never a URL chosen by the model). */
+export const safeMedia = (media) => (
+    typeof media?.src === 'string' && /^\/chat\/[\w.-]+\.(jpe?g|png|webp|gif)$/i.test(media.src)
+        ? { src: media.src, alt: typeof media.alt === 'string' ? media.alt : '' }
+        : undefined
+);
+
+/**
+ * Sends the conversation to the API. Never throws; resolves to
+ * { message (answer or friendly error), session?, verificationFailed? }.
+ * auth: { session } or { turnstileToken } (both optional).
+ */
+export async function askChat(messages, { fetchImpl, timeoutMs, email, auth = {} }) {
     const unavailable = `The assistant is unavailable right now. You can reach Kazi directly at ${email}.`;
     const controller = new AbortController();
     const timer = setTimeout(() => controller.abort(), timeoutMs);
@@ -27,7 +43,7 @@ export async function askChat(messages, { fetchImpl, timeoutMs, email }) {
         const response = await fetchImpl('/api/chat', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ messages }),
+            body: JSON.stringify({ messages, ...auth }),
             signal: controller.signal,
         });
         let body = null;
@@ -36,18 +52,27 @@ export async function askChat(messages, { fetchImpl, timeoutMs, email }) {
         } catch {
             body = null; // e.g. the dev server answering with HTML
         }
-        if (response.ok && body?.answer) return { role: 'assistant', content: body.answer };
-        if (response.status === 429) return errorReply('You have asked a lot of questions. Please try again in a while.');
-        if ((response.status === 400 || response.status === 422) && body?.error) return errorReply(body.error);
-        return errorReply(unavailable);
+        if (response.ok && body?.answer) {
+            const media = safeMedia(body.media);
+            return { message: { role: 'assistant', content: body.answer, ...(media && { media }) }, session: body.session };
+        }
+        if (response.status === 403 && body?.code === 'verification') return { message: errorReply(body.error), verificationFailed: true };
+        if (response.status === 429) return { message: errorReply('You have asked a lot of questions. Please try again in a while.') };
+        if ((response.status === 400 || response.status === 422) && body?.error) return { message: errorReply(body.error) };
+        return { message: errorReply(unavailable) };
     } catch {
-        return errorReply(unavailable); // network error or timeout
+        return { message: errorReply(unavailable) }; // network error or timeout
     } finally {
         clearTimeout(timer);
     }
 }
 
-const ChatWidget = ({ fetchImpl = (...args) => fetch(...args), timeoutMs = 30000 }) => {
+const ChatWidget = ({
+    fetchImpl = (...args) => fetch(...args),
+    timeoutMs = 30000,
+    siteKey = process.env.REACT_APP_TURNSTILE_SITE_KEY,
+    createVerifierImpl = createVerifier,
+}) => {
     const { profile } = useContent();
     const [open, setOpen] = useState(false);
     const [messages, setMessages] = useState([]); // { role, content, error? }
@@ -55,6 +80,9 @@ const ChatWidget = ({ fetchImpl = (...args) => fetch(...args), timeoutMs = 30000
     const [loading, setLoading] = useState(false);
     const inputRef = useRef(null);
     const listRef = useRef(null);
+    const turnstileRef = useRef(null);
+    const verifierRef = useRef(null); // Promise<{ getToken, remove }> while the panel is open
+    const sessionRef = useRef(null); // signed session from the API, kept while the page is open
 
     useEffect(() => {
         if (open) inputRef.current?.focus();
@@ -63,6 +91,33 @@ const ChatWidget = ({ fetchImpl = (...args) => fetch(...args), timeoutMs = 30000
     useEffect(() => {
         if (listRef.current) listRef.current.scrollTop = listRef.current.scrollHeight;
     }, [messages, loading]);
+
+    // Turnstile widget lives inside the open panel (an interactive check, if needed, appears there).
+    useEffect(() => {
+        if (!open || !siteKey || !turnstileRef.current) return undefined;
+        const verifier = createVerifierImpl(turnstileRef.current, siteKey);
+        verifier.catch(() => {}); // a failed load surfaces as a missing token -> the API answers 403
+        verifierRef.current = verifier;
+        return () => {
+            verifierRef.current = null;
+            verifier.then((v) => v.remove()).catch(() => {});
+        };
+    }, [open, siteKey, createVerifierImpl]);
+
+    const getToken = async () => {
+        if (!siteKey || !verifierRef.current) return undefined;
+        let timer;
+        try {
+            return await Promise.race([
+                verifierRef.current.then((v) => v.getToken()),
+                new Promise((_, reject) => { timer = setTimeout(() => reject(new Error('timeout')), TOKEN_TIMEOUT_MS); }),
+            ]);
+        } catch {
+            return undefined;
+        } finally {
+            clearTimeout(timer);
+        }
+    };
 
     useEffect(() => {
         if (!open) return undefined;
@@ -81,8 +136,17 @@ const ChatWidget = ({ fetchImpl = (...args) => fetch(...args), timeoutMs = 30000
         setMessages((prev) => [...prev, { role: 'user', content: question }]);
         setInput('');
         setLoading(true);
-        const reply = await askChat(history, { fetchImpl, timeoutMs, email: profile.contact.email });
-        setMessages((prev) => [...prev, reply]);
+        const options = { fetchImpl, timeoutMs, email: profile.contact.email };
+        const withToken = async () => askChat(history, { ...options, auth: { turnstileToken: await getToken() } });
+        let result = sessionRef.current
+            ? await askChat(history, { ...options, auth: { session: sessionRef.current } })
+            : await withToken();
+        if (result.verificationFailed && sessionRef.current) {
+            sessionRef.current = null; // session expired: verify again once
+            result = await withToken();
+        }
+        if (result.session) sessionRef.current = result.session;
+        setMessages((prev) => [...prev, result.message]);
         setLoading(false);
         inputRef.current?.focus();
     };
@@ -115,6 +179,7 @@ const ChatWidget = ({ fetchImpl = (...args) => fetch(...args), timeoutMs = 30000
                         {messages.map((m, i) => (
                             <div key={i} className={`chat__message chat__message--${m.role}${m.error ? ' chat__message--error' : ''}`}>
                                 <RichText text={m.content} />
+                                {m.media && <img className="chat__media" src={m.media.src} alt={m.media.alt} loading="lazy" />}
                             </div>
                         ))}
                         {loading && (
@@ -132,6 +197,8 @@ const ChatWidget = ({ fetchImpl = (...args) => fetch(...args), timeoutMs = 30000
                         </div>
                     )}
 
+                    {siteKey && <div ref={turnstileRef} className="chat__turnstile" />}
+
                     <form className="chat__form" onSubmit={(e) => { e.preventDefault(); send(input); }}>
                         <textarea
                             ref={inputRef}
@@ -148,7 +215,10 @@ const ChatWidget = ({ fetchImpl = (...args) => fetch(...args), timeoutMs = 30000
                             <i className="uil uil-message" />
                         </button>
                     </form>
-                    <p className="chat__note">AI answers can be wrong; the CV is authoritative. Questions go to Azure OpenAI and are not stored by this site.</p>
+                    <p className="chat__note">
+                        AI answers can be wrong; the CV is authoritative. Questions are processed by Azure OpenAI and stored
+                        anonymously (no IP address) to improve this assistant.{siteKey && ' Protected by Cloudflare Turnstile.'}
+                    </p>
                 </section>
             )}
 
@@ -170,6 +240,8 @@ const ChatWidget = ({ fetchImpl = (...args) => fetch(...args), timeoutMs = 30000
 ChatWidget.propTypes = {
     fetchImpl: PropTypes.func,
     timeoutMs: PropTypes.number,
+    siteKey: PropTypes.string,
+    createVerifierImpl: PropTypes.func,
 };
 
 export default ChatWidget;

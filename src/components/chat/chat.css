@@ -118,6 +118,14 @@
     border-bottom-right-radius: 0.3rem;
 }
 
+.chat__media {
+    display: block;
+    width: 100%;
+    margin-top: 0.6rem;
+    border-radius: 0.6rem;
+    white-space: normal;
+}
+
 .chat__message--error {
     background-color: hsl(0 80% 97%);
     border-color: hsl(0 70% 85%);
@@ -169,6 +177,15 @@
 .chat__suggestion:hover {
     background-color: var(--title-color-dark);
     color: var(--container-color);
+}
+
+.chat__turnstile {
+    display: flex;
+    justify-content: center;
+}
+
+.chat__turnstile:not(:empty) {
+    padding: 0.5rem 0;
 }
 
 .chat__form {

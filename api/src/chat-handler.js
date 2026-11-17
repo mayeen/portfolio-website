@@ -2,10 +2,14 @@
 // The CV is small (~4k tokens), so it goes into every prompt: no vector search needed.
 // Kept free of Azure SDK imports so it can be tested with fakes (fetch, CV loader, clock).
 //
-// Request:  { "messages": [{ "role": "user" | "assistant", "content": "..." }, ...] }   (last one from the user)
-// Response: { "answer": "..." }  |  { "error": "..." } with 400 / 422 / 429 / 500 / 503
+// Request:  { "messages": [{ "role": "user" | "assistant", "content": "..." }, ...],   (last one from the user)
+//             "turnstileToken"?: "...", "session"?: "..." }                              (bot protection, see below)
+// Response: { "answer": "...", "media"?: { src, alt }, "session"?: "..." }  |  { "error": "..." } with 400 / 403 / 422 / 429 / 500 / 503
+
+import { createHmac, timingSafeEqual } from 'node:crypto';
 
 const OPENAI_API_VERSION = '2024-10-21';
+const TURNSTILE_VERIFY_URL = 'https://challenges.cloudflare.com/turnstile/v0/siteverify';
 
 export const LIMITS = {
     maxTurns: 10, // messages kept from the conversation (older ones are dropped)
@@ -65,6 +69,7 @@ Answer ONLY from the CV below.
 - Be exact with facts. Use job titles, employers and dates exactly as in the "- key: value" lines; do not relabel a role. The headline (e.g. "AI/ML Engineer") is Kazi's professional profile and target role, not his job title at an employer.
 - Job status and durations: use the "Computed from the CV dates" list below, which is correct; do not do your own date arithmetic. A job marked "ended" is in the past, even if the CV text describes it in the present tense. If no job is ongoing, do not describe him as unemployed, not employed or not working (in any wording or language). Instead start with his most recent role and its end, then the "availability" from the Profile, e.g. "His most recent role was ... at ..., which ended in September 2026. He is available immediately and open to relocation."
 - Years of experience: the CV's "7+ years" is total software experience. For one specialty (e.g. AI/ML, .NET), add up the durations of the jobs where that work was done and say which jobs you counted. Never attribute the overall total to one specialty.
+- Salary questions (expectation, range, how much, in any language): reply with exactly "[[SALARY:xx]]" and nothing else, where xx is the two-letter code of the visitor's language (e.g. [[SALARY:en]], [[SALARY:de]]). The website replaces it with Kazi's own answer.
 - Refer to Kazi in the third person. Be concise: 2 to 5 sentences or a short list. Plain text; **bold** is allowed for key terms.
 - Reply in the language of the visitor's last message (e.g. German or English).
 - Today is ${today}. Use it for "currently", durations and years of experience.
@@ -178,17 +183,100 @@ export function cachedLoader(load, { ttlMs = 5 * 60_000, now = Date.now } = {}) 
     };
 }
 
+// ------------------------------------------------------------ salary answer (Kazi's own words + meme)
+// The model only signals a salary question with a marker; the exact text and the image come from here,
+// so the wording never drifts. The image is served by the website from public/chat/.
+
+export const SALARY_REPLIES = {
+    en: "I want a competitive salary and of course I am open to negotiate. But when I say competitive salary, I don't mean :p",
+    de: 'Ich möchte ein wettbewerbsfähiges Gehalt und bin natürlich offen für Verhandlungen. Aber wenn ich wettbewerbsfähiges Gehalt sage, meine ich nicht :p',
+};
+export const SALARY_MEDIA = {
+    src: '/chat/competitive-salary.png',
+    alt: 'Meme: "What does competitive salary even mean?" - "Your salary will be competing against your bills."',
+};
+
+/** Model answer -> { answer, media? }: a [[SALARY:xx]] marker becomes the fixed reply (English for other languages). */
+export function applySalaryReply(answer) {
+    const marker = answer.match(/\[\[SALARY(?::([a-z]{2}))?\]\]/i);
+    if (!marker) return { answer };
+    return { answer: SALARY_REPLIES[marker[1]?.toLowerCase()] ?? SALARY_REPLIES.en, media: SALARY_MEDIA };
+}
+
+// ------------------------------------------------------------ bot protection (Cloudflare Turnstile)
+// The first question carries a Turnstile token, verified with Cloudflare. The answer then includes a signed
+// session (valid 10 minutes), so follow-up questions need no new challenge. Without TURNSTILE_SECRET_KEY this is off.
+
+export const SESSION_TTL_MS = 10 * 60_000; // 10 minutes; after that the widget silently gets a new token
+
+/** Stateless signed sessions: "<expiry ms>.<HMAC>". Nothing to store; works across function instances. */
+export function createSessions(secret, now = Date.now) {
+    const key = createHmac('sha256', 'chat-session').update(secret).digest();
+    const sign = (exp) => createHmac('sha256', key).update(String(exp)).digest('base64url');
+    return {
+        issue: () => {
+            const exp = now() + SESSION_TTL_MS;
+            return `${exp}.${sign(exp)}`;
+        },
+        valid: (token) => {
+            if (typeof token !== 'string' || token.length > 200) return false;
+            const [exp, sig] = token.split('.');
+            if (!/^\d+$/.test(exp ?? '') || !sig) return false;
+            const expected = Buffer.from(sign(exp));
+            const given = Buffer.from(sig);
+            return given.length === expected.length && timingSafeEqual(given, expected) && Number(exp) > now();
+        },
+    };
+}
+
+/** Asks Cloudflare whether the token is genuine. Fails closed (false) on any error. */
+export async function verifyTurnstile(token, ip, { secret, fetchImpl = fetch }) {
+    if (typeof token !== 'string' || !token || token.length > 2048) return false;
+    const form = new URLSearchParams({ secret, response: token });
+    if (ip && ip !== 'unknown') form.set('remoteip', ip);
+    try {
+        const response = await fetchImpl(TURNSTILE_VERIFY_URL, { method: 'POST', body: form, signal: AbortSignal.timeout(5000) });
+        const result = await response.json();
+        return result?.success === true;
+    } catch {
+        return false;
+    }
+}
+
+// ------------------------------------------------------------ question analytics (Application Insights)
+// One log line per question: "chat-question {json}". No IP, no session, emails and phone numbers masked.
+// Query in Application Insights > Logs (see README).
+
+/** Masks emails and phone numbers (9+ digits, so date ranges like "2017-2019" stay) and caps the length. */
+export function anonymize(text) {
+    return text
+        .replace(/[\w.+-]+@[\w-]+(\.[\w-]+)+/g, '[email]')
+        .replace(/\+?\d[\d\s()/.-]{6,}\d/g, (m) => (m.replace(/\D/g, '').length >= 9 ? '[phone]' : m))
+        .slice(0, 500);
+}
+
+const logQuestion = (logger, messages, status, usage) => logger.log(`chat-question ${JSON.stringify({
+    q: anonymize(messages.at(-1).content),
+    turn: messages.filter((m) => m.role === 'user').length, // 1 = first question of the conversation
+    status, // answered | filtered | error | rate-limited
+    tokensIn: usage?.prompt_tokens ?? null,
+    tokensOut: usage?.completion_tokens ?? null,
+})}`);
+
 /**
  * Builds the HTTP handler.
  *   getCvMarkdown(): Promise<string>   the raw cv.md (Cosmos document "cv-md")
- *   config: { endpoint, key, deployment } for Azure OpenAI
+ *   config: { endpoint, key, deployment } for Azure OpenAI, optional turnstileSecret
+ * handler(request, context): context.log / context.error when running in Azure Functions, else `log`.
  */
 export function createChatHandler({ getCvMarkdown, config, limits = LIMITS, fetchImpl = fetch, now = Date.now, log = console }) {
     const rateLimit = createRateLimiter(limits, now);
+    const sessions = config.turnstileSecret ? createSessions(config.turnstileSecret, now) : null;
 
-    return async function handler(request) {
+    return async function handler(request, context) {
+        const logger = context?.log ? context : log;
         if (!config.endpoint || !config.key || !config.deployment) {
-            log.error('chat: AZURE_AI_ENDPOINT / AZURE_AI_KEY / AZURE_OPENAI_DEPLOYMENT app settings missing');
+            logger.error('chat: AZURE_AI_ENDPOINT / AZURE_AI_KEY / AZURE_OPENAI_DEPLOYMENT app settings missing');
             return { status: 503, jsonBody: { error: 'Chat is not configured' } };
         }
 
@@ -201,8 +289,21 @@ export function createChatHandler({ getCvMarkdown, config, limits = LIMITS, fetc
         const { messages, error } = validateMessages(body, limits);
         if (error) return { status: 400, jsonBody: { error } };
 
-        const limit = rateLimit(clientIp(request.headers));
+        const ip = clientIp(request.headers);
+        let session;
+        if (sessions) {
+            session = sessions.valid(body.session) ? body.session : null;
+            if (!session) {
+                if (!(await verifyTurnstile(body.turnstileToken, ip, { secret: config.turnstileSecret, fetchImpl }))) {
+                    return { status: 403, jsonBody: { error: 'Could not verify that you are human. Please reload the page and try again.', code: 'verification' } };
+                }
+                session = sessions.issue();
+            }
+        }
+
+        const limit = rateLimit(ip);
         if (!limit.ok) {
+            logQuestion(logger, messages, 'rate-limited');
             return { status: 429, headers: { 'Retry-After': String(limit.retryAfter) }, jsonBody: { error: 'Too many questions, please try again later.' } };
         }
 
@@ -213,13 +314,16 @@ export function createChatHandler({ getCvMarkdown, config, limits = LIMITS, fetc
             const { answer, usage } = await complete([{ role: 'system', content: systemPrompt(cv, today) }, ...messages], {
                 ...config, maxTokens: limits.maxTokens, timeoutMs: limits.timeoutMs, fetchImpl,
             });
-            log.log?.(`chat: ${usage?.prompt_tokens ?? '?'} in, ${usage?.completion_tokens ?? '?'} out`);
-            return { status: 200, headers: { 'Cache-Control': 'no-store' }, jsonBody: { answer } };
+            logQuestion(logger, messages, 'answered', usage);
+            const reply = applySalaryReply(answer);
+            return { status: 200, headers: { 'Cache-Control': 'no-store' }, jsonBody: session ? { ...reply, session } : reply };
         } catch (err) {
             if (err instanceof ContentFilterError) {
+                logQuestion(logger, messages, 'filtered');
                 return { status: 422, jsonBody: { error: 'I can only answer questions about Kazi\'s professional experience.' } };
             }
-            log.error(`chat: ${err.name} ${err.message}`);
+            logQuestion(logger, messages, 'error');
+            logger.error(`chat: ${err.name} ${err.message}`);
             return { status: 500, jsonBody: { error: 'The assistant is unavailable right now. Please try again later.' } };
         }
     };
