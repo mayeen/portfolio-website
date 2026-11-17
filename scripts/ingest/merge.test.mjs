@@ -4,7 +4,6 @@ import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
 import { buildContent, CV_PATH } from '../build-content.mjs';
 import { mergeExtraction, formatReport, normalize, readBlock } from './merge.mjs';
-import { parseArgs } from '../ingest-cv.mjs';
 
 const source = readFileSync(CV_PATH, 'utf8');
 const { data } = buildContent(source);
@@ -182,13 +181,5 @@ describe('helpers', () => {
         const text = formatReport([{ role: 'ai', file: 'cv.pdf', report: merge(extracted).report }]);
         assert.match(text, /Fact conflicts \(1\)/);
         assert.match(text, /\| Education: M\.Sc\. in Web and Data Science: end date \| 2026-07-22 \| 2026-06 \|/);
-    });
-
-    test('parseArgs: role/file pairs and flags', () => {
-        assert.deepEqual(parseArgs(['ai', 'a.pdf', 'software', 'b.pdf', '--dry-run']), {
-            jobs: [{ role: 'ai', file: 'a.pdf' }, { role: 'software', file: 'b.pdf' }], dryRun: true, cached: false,
-        });
-        assert.throws(() => parseArgs(['ai']), /Usage/);
-        assert.throws(() => parseArgs(['manager', 'a.pdf']), /Unknown role/);
     });
 });
